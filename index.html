@@ -4,67 +4,58 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>HCP Segmentation Dashboard — Pfizer UC</title>
-<meta name="description" content="Executive business dashboard for HCP segmentation insights in Ulcerative Colitis therapeutics">
+<meta name="description" content="Executive business dashboard for HCP segmentation in Ulcerative Colitis">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
-<div class="bg-mesh"></div>
-<div class="app-layout">
 
-<!-- Sidebar -->
-<aside class="sidebar">
-<div class="sidebar-logo"><img src="pfizer-logo.png" alt="Pfizer"></div>
-<nav class="sidebar-nav">
-<a class="nav-item active" data-section="sec-kpi" href="#"><i class="fas fa-chart-line"></i><span class="nav-tooltip">KPIs</span></a>
-<a class="nav-item" data-section="sec-segments" href="#"><i class="fas fa-users"></i><span class="nav-tooltip">Segments</span></a>
-<a class="nav-item" data-section="sec-funnel" href="#"><i class="fas fa-filter"></i><span class="nav-tooltip">Funnel</span></a>
-<a class="nav-item" data-section="sec-personas" href="#"><i class="fas fa-user-md"></i><span class="nav-tooltip">HCP Timelines</span></a>
-<a class="nav-item" data-section="sec-marketing" href="#"><i class="fas fa-bullhorn"></i><span class="nav-tooltip">Marketing</span></a>
-<a class="nav-item" data-section="sec-insights" href="#"><i class="fas fa-lightbulb"></i><span class="nav-tooltip">Insights</span></a>
-<a class="nav-item" data-section="sec-drift" href="#"><i class="fas fa-wave-square"></i><span class="nav-tooltip">Drift Alert</span></a>
-<a class="nav-item" data-section="sec-actions" href="#"><i class="fas fa-rocket"></i><span class="nav-tooltip">Actions</span></a>
-</nav>
-</aside>
-
-<main class="main-content">
-
-<!-- Header -->
-<header class="dashboard-header">
-<div class="header-left">
-<img src="pfizer-logo.png" alt="Pfizer" class="header-logo">
-<div>
+<!-- Top Header -->
+<header class="top-header">
+<div class="top-header-left">
+<img src="pfizer-logo.png" alt="Pfizer">
 <h1>HCP Segmentation Dashboard</h1>
-<p>Ulcerative Colitis · Longitudinal Behavioral Analytics · 86-Week Window</p>
+<span>Ulcerative Colitis — Longitudinal Behavioral Analytics</span>
 </div>
-</div>
-<div class="header-right">
-<span class="header-badge">● Pipeline Stable</span>
-<span class="header-date">Q2 2026</span>
-</div>
+<div><span class="header-badge">Pipeline Stable</span></div>
 </header>
 
-<!-- 1. Business KPIs -->
-<section id="sec-kpi" class="dashboard-section">
-<div class="section-header"><div class="section-icon blue"><i class="fas fa-chart-line"></i></div><div><div class="section-title">Business KPIs</div><div class="section-subtitle">Key performance indicators for stakeholder alignment</div></div></div>
-<div class="grid-5">
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Total HCPs</span><div class="kpi-icon" style="background:rgba(0,163,224,0.12);color:#00a3e0"><i class="fas fa-user-md"></i></div></div><div class="kpi-value" data-count="20931" data-format="comma">0</div><div class="kpi-sub">Addressable Market</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Labeled Cohort</span><div class="kpi-icon" style="background:rgba(16,185,129,0.12);color:#10b981"><i class="fas fa-tag"></i></div></div><div class="kpi-value" data-count="11899" data-format="comma">0</div><div class="kpi-sub">56.9% classified</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">High-Value (SEG_B)</span><div class="kpi-icon" style="background:rgba(0,163,224,0.12);color:#00a3e0"><i class="fas fa-star"></i></div></div><div class="kpi-value" data-count="3349" data-format="comma">0</div><div class="kpi-sub">28.2% — Marketing allies</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Conversion Target</span><div class="kpi-icon" style="background:rgba(84,200,232,0.12);color:#54c8e8"><i class="fas fa-exchange-alt"></i></div></div><div class="kpi-value" data-count="1500" data-format="comma">0</div><div class="kpi-sub">SEG_C → SEG_B potential</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span><div class="kpi-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b"><i class="fas fa-search"></i></div></div><div class="kpi-value" data-count="9032" data-format="comma">0</div><div class="kpi-sub">Pending classification</div></div>
-</div>
-<div class="alert-box alert-info" style="margin-top:20px"><i class="fas fa-info-circle"></i><span><strong>Business Opportunity:</strong> ~1,500 SEG_C HCPs show partial behavioral alignment with SEG_B. Targeted detailing campaigns could accelerate their conversion to high-value relationship-centric prescribers, increasing oral ATx adoption by an estimated <strong>15-22%</strong>.</span></div>
-</section>
+<!-- Tab Navigation -->
+<nav class="tab-nav">
+<button class="tab-btn active" data-tab="tab-overview"><i class="fas fa-chart-line"></i> Overview</button>
+<button class="tab-btn" data-tab="tab-segments"><i class="fas fa-users"></i> Segments</button>
+<button class="tab-btn" data-tab="tab-hcp"><i class="fas fa-user-md"></i> HCP Journeys</button>
+<button class="tab-btn" data-tab="tab-marketing"><i class="fas fa-bullhorn"></i> Marketing</button>
+<button class="tab-btn" data-tab="tab-insights"><i class="fas fa-lightbulb"></i> Insights</button>
+<button class="tab-btn" data-tab="tab-drift"><i class="fas fa-shield-alt"></i> Risk Monitor</button>
+<button class="tab-btn" data-tab="tab-actions"><i class="fas fa-rocket"></i> Actions</button>
+</nav>
 
-<!-- 2. Segment Profiles -->
-<section id="sec-segments" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon light"><i class="fas fa-users"></i></div><div><div class="section-title">Segment Profiles</div><div class="section-subtitle">Behavioral archetypes — Patient Preference · Oral ATx Buy-in · Openness to New Tx</div></div></div>
+<!-- ==================== TAB: OVERVIEW ==================== -->
+<div id="tab-overview" class="tab-content active">
+<div class="section-header"><div class="section-icon"><i class="fas fa-chart-line"></i></div><div><div class="section-title">Business Overview</div><div class="section-subtitle">Key performance indicators for stakeholder alignment</div></div></div>
+<div class="grid-5">
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Total HCPs</span><div class="kpi-icon" style="background:#eef6fc;color:#00a3e0"><i class="fas fa-user-md"></i></div></div><div class="kpi-value" data-count="20931">0</div><div class="kpi-sub">Addressable Market</div></div>
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Labeled Cohort</span><div class="kpi-icon" style="background:#eef9f3;color:#0fa672"><i class="fas fa-tag"></i></div></div><div class="kpi-value" data-count="11899">0</div><div class="kpi-sub">56.9% classified</div></div>
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">High-Value (SEG_B)</span><div class="kpi-icon" style="background:#eef6fc;color:#0051a5"><i class="fas fa-star"></i></div></div><div class="kpi-value" data-count="3349">0</div><div class="kpi-sub">28.2% — Marketing allies</div></div>
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Conversion Target</span><div class="kpi-icon" style="background:#ecfaff;color:#54c8e8"><i class="fas fa-exchange-alt"></i></div></div><div class="kpi-value" data-count="1500">0</div><div class="kpi-sub">SEG_C to SEG_B potential</div></div>
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span><div class="kpi-icon" style="background:#fef6e7;color:#d97706"><i class="fas fa-search"></i></div></div><div class="kpi-value" data-count="9032">0</div><div class="kpi-sub">Pending classification</div></div>
+</div>
+<div class="alert-box alert-info" style="margin-top:20px"><i class="fas fa-info-circle"></i><span><strong>Business Opportunity:</strong> ~1,500 SEG_C HCPs show partial behavioral alignment with SEG_B. Targeted detailing campaigns could increase oral ATx adoption by an estimated 15-22%.</span></div>
+<div class="grid-2" style="margin-top:24px">
+<div class="card"><div class="chart-title">Engagement Pipeline</div><div class="chart-container"><canvas id="chart-funnel"></canvas></div></div>
+<div class="card"><div class="chart-title">Segment Distribution</div><div class="chart-container"><canvas id="chart-doughnut"></canvas></div></div>
+</div>
+</div>
+
+<!-- ==================== TAB: SEGMENTS ==================== -->
+<div id="tab-segments" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-users"></i></div><div><div class="section-title">Segment Profiles</div><div class="section-subtitle">Behavioral archetypes — Patient Preference, Oral ATx Buy-in, Openness to New Tx</div></div></div>
 <div class="grid-3">
 <div class="card segment-card seg-a" style="padding-top:28px">
 <div class="segment-name" style="color:#0051a5">Segment A</div>
-<span class="segment-tag">Traditional / Confident · 53.8%</span>
+<span class="segment-tag">Traditional / Confident — 53.8%</span>
 <div class="segment-desc">HCPs confident their trusted, tried and true therapies will continue to be sufficient for their patients. Low responsiveness to marketing outreach.</div>
 <div class="segment-stats">
 <div class="segment-stat"><span class="segment-stat-label">Count</span><span class="segment-stat-value">6,406</span></div>
@@ -77,8 +68,8 @@
 <div class="segment-stat"><span class="segment-stat-label">Marketing Priority</span><span class="badge badge-amber">Low ROI</span></div>
 </div></div>
 <div class="card segment-card seg-b" style="padding-top:28px">
-<div class="segment-name" style="color:#00a3e0">Segment B ⭐</div>
-<span class="segment-tag">Relationship-Centric · 28.2%</span>
+<div class="segment-name" style="color:#00a3e0">Segment B</div>
+<span class="segment-tag">Relationship-Centric — 28.2%</span>
 <div class="segment-desc">Relationship-centric HCPs on the forefront of UC treatment who understand the value of patient preference and acceptance. <strong>Key marketing allies.</strong></div>
 <div class="segment-stats">
 <div class="segment-stat"><span class="segment-stat-label">Count</span><span class="segment-stat-value">3,349</span></div>
@@ -91,102 +82,128 @@
 <div class="segment-stat"><span class="segment-stat-label">Marketing Priority</span><span class="badge badge-green">High ROI</span></div>
 </div></div>
 <div class="card segment-card seg-c" style="padding-top:28px">
-<div class="segment-name" style="color:#54c8e8">Segment C</div>
-<span class="segment-tag">Didactic / Patient-Centric · 18.0%</span>
+<div class="segment-name" style="color:#0d009d">Segment C</div>
+<span class="segment-tag">Didactic / Patient-Centric — 18.0%</span>
 <div class="segment-desc">HCPs who are more didactic than patient-centric and therefore slower to buy into the value proposition that oral ATx offers. <strong>Conversion opportunity.</strong></div>
 <div class="segment-stats">
 <div class="segment-stat"><span class="segment-stat-label">Count</span><span class="segment-stat-value">2,144</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Patient Preference</span><span class="segment-stat-value" style="color:#54c8e8">Medium</span></div>
-<div class="segment-meter"><div class="segment-meter-fill" data-width="50" style="width:0;background:#54c8e8"></div></div>
-<div class="segment-stat"><span class="segment-stat-label">Oral ATx Buy-in</span><span class="segment-stat-value" style="color:#54c8e8">Medium</span></div>
-<div class="segment-meter"><div class="segment-meter-fill" data-width="45" style="width:0;background:#54c8e8"></div></div>
-<div class="segment-stat"><span class="segment-stat-label">Openness to New Tx</span><span class="segment-stat-value" style="color:#54c8e8">Medium</span></div>
-<div class="segment-meter"><div class="segment-meter-fill" data-width="50" style="width:0;background:#54c8e8"></div></div>
+<div class="segment-stat"><span class="segment-stat-label">Patient Preference</span><span class="segment-stat-value" style="color:#0d009d">Medium</span></div>
+<div class="segment-meter"><div class="segment-meter-fill" data-width="50" style="width:0;background:#0d009d"></div></div>
+<div class="segment-stat"><span class="segment-stat-label">Oral ATx Buy-in</span><span class="segment-stat-value" style="color:#0d009d">Medium</span></div>
+<div class="segment-meter"><div class="segment-meter-fill" data-width="45" style="width:0;background:#0d009d"></div></div>
+<div class="segment-stat"><span class="segment-stat-label">Openness to New Tx</span><span class="segment-stat-value" style="color:#0d009d">Medium</span></div>
+<div class="segment-meter"><div class="segment-meter-fill" data-width="50" style="width:0;background:#0d009d"></div></div>
 <div class="segment-stat"><span class="segment-stat-label">Marketing Priority</span><span class="badge badge-sky">Convertible</span></div>
 </div></div>
 </div>
-</section>
+</div>
 
-<!-- 3. Engagement Funnel -->
-<section id="sec-funnel" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon deep"><i class="fas fa-filter"></i></div><div><div class="section-title">Engagement Funnel</div><div class="section-subtitle">From total addressable market to elite conversion targets</div></div></div>
+<!-- ==================== TAB: HCP JOURNEYS ==================== -->
+<div id="tab-hcp" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-user-md"></i></div><div><div class="section-title">HCP Behavioral Journeys</div><div class="section-subtitle">Representative physician timelines across 86 weeks — TRx, Marketing Engagement, New Rx, Direct Mail</div></div></div>
+
+<div class="sub-tabs">
+<button class="sub-tab active" data-subtab="sub-pa">Dr. Maria Lopez — SEG_A</button>
+<button class="sub-tab" data-subtab="sub-pb">Dr. James Chen — SEG_B</button>
+<button class="sub-tab" data-subtab="sub-pc">Dr. Sarah Williams — SEG_C</button>
+</div>
+
+<!-- Dr. Lopez -->
+<div id="sub-pa" class="sub-panel active">
+<div class="card persona-card">
+<div class="persona-header"><div class="persona-avatar" style="background:#0051a5">ML</div><div><div class="persona-name">Dr. Maria Lopez</div><div class="persona-role">Gastroenterologist — Houston, TX — 15 years practice</div><div class="persona-seg" style="color:#0051a5">SEG_A — Traditional / Confident</div></div></div>
+<div class="chart-container" style="max-height:320px"><canvas id="chart-pa-main"></canvas></div>
+<div class="persona-detail-grid">
+<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx</div><div class="persona-metric-value">12.3</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Marketing Response Rate</div><div class="persona-metric-value">8%</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Oral ATx Adoption</div><div class="persona-metric-value">Low</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Conversion Probability</div><div class="persona-metric-value" style="color:#dc2626">12%</div></div>
+</div>
+<div class="alert-box alert-info"><i class="fas fa-info-circle"></i><span><strong>Behavioral Pattern:</strong> Flat TRx trajectory with minimal response to detailing or direct mail. Prescribes established biologics exclusively. Marketing spend yields diminishing returns — recommend maintenance-only contact.</span></div>
+</div>
+</div>
+
+<!-- Dr. Chen -->
+<div id="sub-pb" class="sub-panel">
+<div class="card persona-card">
+<div class="persona-header"><div class="persona-avatar" style="background:#00a3e0">JC</div><div><div class="persona-name">Dr. James Chen</div><div class="persona-role">GI Specialist — San Francisco, CA — 8 years practice</div><div class="persona-seg" style="color:#00a3e0">SEG_B — Relationship-Centric</div></div></div>
+<div class="chart-container" style="max-height:320px"><canvas id="chart-pb-main"></canvas></div>
+<div class="persona-detail-grid">
+<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx</div><div class="persona-metric-value">14.8</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Marketing Response Rate</div><div class="persona-metric-value">72%</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Oral ATx Adoption</div><div class="persona-metric-value" style="color:#0fa672">High</div></div>
+<div class="persona-metric"><div class="persona-metric-label">KOL Potential</div><div class="persona-metric-value" style="color:#0fa672">Strong</div></div>
+</div>
+<div class="alert-box alert-success"><i class="fas fa-check-circle"></i><span><strong>Ideal Marketing Partner:</strong> Strong upward TRx trend correlated with engagement touchpoints. Actively responds to detailing, attends medical education events, and adopts oral ATx early. High KOL potential — consider speaker program enrollment and advisory board invitation.</span></div>
+</div>
+</div>
+
+<!-- Dr. Williams -->
+<div id="sub-pc" class="sub-panel">
+<div class="card persona-card">
+<div class="persona-header"><div class="persona-avatar" style="background:#0d009d">SW</div><div><div class="persona-name">Dr. Sarah Williams</div><div class="persona-role">Internist / GI — Chicago, IL — 12 years practice</div><div class="persona-seg" style="color:#0d009d">SEG_C — Didactic / Patient-Centric</div></div></div>
+<div class="chart-container" style="max-height:320px"><canvas id="chart-pc-main"></canvas></div>
+<div class="persona-detail-grid">
+<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx</div><div class="persona-metric-value">7.2</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Marketing Response Rate</div><div class="persona-metric-value">34%</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Oral ATx Adoption</div><div class="persona-metric-value" style="color:#d97706">Medium</div></div>
+<div class="persona-metric"><div class="persona-metric-label">Conversion Probability</div><div class="persona-metric-value" style="color:#d97706">58%</div></div>
+</div>
+<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Nurture Required:</strong> Gradual TRx growth with inconsistent engagement spikes. Shows interest in peer-reviewed data but skeptical of promotional materials. Recommend evidence-based approach: clinical trial data sharing, peer-to-peer education, and sample programs over 6 months.</span></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== TAB: MARKETING ==================== -->
+<div id="tab-marketing" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-bullhorn"></i></div><div><div class="section-title">Marketing Intelligence</div><div class="section-subtitle">Channel responsiveness and conversion opportunity analysis</div></div></div>
 <div class="grid-2">
-<div class="card"><div class="chart-title">Market → Conversion Pipeline</div><div class="chart-container"><canvas id="chart-engagement"></canvas></div></div>
-<div class="card"><div class="chart-title">Segment Distribution</div><div class="chart-container"><canvas id="chart-class-doughnut"></canvas></div></div>
+<div class="card"><div class="chart-title">Marketing Channel Responsiveness</div><div class="chart-container"><canvas id="chart-radar"></canvas></div></div>
+<div class="card"><div class="chart-title">Conversion Pipeline</div><div class="chart-container"><canvas id="chart-conversion"></canvas></div>
+<div class="alert-box alert-success"><i class="fas fa-chart-line"></i><span><strong>SEG_B Strategy:</strong> These HCPs respond to relationship-based engagement. Rep visits and peer-to-peer programs show the highest ROI. Use them as champions to influence SEG_C adoption through KOL-led educational events.</span></div></div>
 </div>
-</section>
+</div>
 
-<!-- 4. HCP Persona Timelines -->
-<section id="sec-personas" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon blue"><i class="fas fa-user-md"></i></div><div><div class="section-title">HCP Behavioral Timelines</div><div class="section-subtitle">Representative physician journeys across 86 weeks — TRx volume vs Marketing engagement</div></div></div>
+<!-- ==================== TAB: INSIGHTS ==================== -->
+<div id="tab-insights" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-lightbulb"></i></div><div><div class="section-title">Strategic Business Insights</div><div class="section-subtitle">Data-driven findings translated to actionable business intelligence</div></div></div>
 <div class="grid-3">
-<div class="card">
-<div class="persona-header"><div class="persona-avatar" style="background:#0051a5">ML</div><div><div class="persona-name">Dr. María López</div><div class="persona-role">Gastroenterologist · Houston, TX</div><div class="persona-seg" style="color:#0051a5">SEG_A — Traditional</div></div></div>
-<div class="chart-container"><canvas id="chart-persona-a"></canvas></div>
-<div class="alert-box alert-info" style="font-size:12px;margin-top:12px;padding:10px 14px"><i class="fas fa-info-circle"></i><span>Flat TRx trend. Minimal response to detailing. <strong>Low conversion probability.</strong></span></div>
-</div>
-<div class="card">
-<div class="persona-header"><div class="persona-avatar" style="background:#00a3e0">JC</div><div><div class="persona-name">Dr. James Chen</div><div class="persona-role">GI Specialist · San Francisco, CA</div><div class="persona-seg" style="color:#00a3e0">SEG_B — Relationship ⭐</div></div></div>
-<div class="chart-container"><canvas id="chart-persona-b"></canvas></div>
-<div class="alert-box alert-success" style="font-size:12px;margin-top:12px;padding:10px 14px"><i class="fas fa-check-circle"></i><span>Strong upward TRx trend. Highly responsive to engagement. <strong>Ideal marketing partner.</strong></span></div>
-</div>
-<div class="card">
-<div class="persona-header"><div class="persona-avatar" style="background:#54c8e8">SW</div><div><div class="persona-name">Dr. Sarah Williams</div><div class="persona-role">Internist / GI · Chicago, IL</div><div class="persona-seg" style="color:#54c8e8">SEG_C — Didactic</div></div></div>
-<div class="chart-container"><canvas id="chart-persona-c"></canvas></div>
-<div class="alert-box alert-warning" style="font-size:12px;margin-top:12px;padding:10px 14px"><i class="fas fa-exclamation-triangle"></i><span>Gradual TRx growth with inconsistent engagement. <strong>Needs sustained nurturing strategy.</strong></span></div>
+<div class="card insight-card"><div class="insight-number">01</div><div class="insight-title">SEG_B = Marketing Multiplier</div><div class="insight-text">SEG_B HCPs show <strong>3.5x higher engagement</strong> with detailing and direct mail. They actively respond to new therapy positioning. Prioritize these 3,349 physicians for premium rep access.</div></div>
+<div class="card insight-card"><div class="insight-number">02</div><div class="insight-title">SEG_C Conversion Window</div><div class="insight-text">~70% of SEG_C physicians show partial behavioral overlap with SEG_B. A <strong>6-month targeted campaign</strong> could shift ~1,500 HCPs toward relationship-centric prescribing patterns.</div></div>
+<div class="card insight-card"><div class="insight-number">03</div><div class="insight-title">Temporal Patterns are Key</div><div class="insight-text">Deep learning captured <strong>75% recall on elite HCPs</strong> using 86-week sequences — proving longitudinal behavioral data is the key differentiator for high-value physician identification.</div></div>
+<div class="card insight-card"><div class="insight-number">04</div><div class="insight-title">Prescription Drift = Risk</div><div class="insight-text">TRx and NRx features show <strong>PSI above 0.30</strong> — significant distributional shift. If prescribing patterns change, segment definitions may need recalibration. Monthly monitoring required.</div></div>
+<div class="card insight-card"><div class="insight-number">05</div><div class="insight-title">Unlock 9K Unlabeled HCPs</div><div class="insight-text">9,032 HCPs remain unclassified. Conservative pseudo-labeling can expand the labeled pool by 40-50%, revealing hidden SEG_B physicians currently receiving no targeted outreach.</div></div>
+<div class="card insight-card"><div class="insight-number">06</div><div class="insight-title">ROI Optimization</div><div class="insight-text">Segment-aware allocation could <strong>reduce marketing waste by 35%</strong> by deprioritizing SEG_A (low-response) and reallocating budget to SEG_B/C conversion programs.</div></div>
 </div>
 </div>
-</section>
 
-<!-- 5. Marketing Intelligence -->
-<section id="sec-marketing" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon light"><i class="fas fa-bullhorn"></i></div><div><div class="section-title">Marketing Intelligence</div><div class="section-subtitle">Segment B as the strategic growth engine — Channel responsiveness across segments</div></div></div>
-<div class="grid-2">
-<div class="card"><div class="chart-title">Marketing Channel Responsiveness by Segment</div><div class="chart-container"><canvas id="chart-marketing-roi"></canvas></div></div>
-<div class="card"><div class="chart-title">Conversion Opportunity Pipeline</div><div class="chart-container"><canvas id="chart-conversion"></canvas></div>
-<div class="alert-box alert-success" style="margin-top:12px"><i class="fas fa-chart-line"></i><span><strong>SEG_B Strategy:</strong> These HCPs respond to relationship-based engagement. Rep visits and peer-to-peer programs show the highest ROI. Use them as <strong>champions</strong> to influence SEG_C adoption through KOL-led educational events.</span></div>
-</div>
-</div>
-</section>
-
-<!-- 6. Business Insights -->
-<section id="sec-insights" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon amber"><i class="fas fa-lightbulb"></i></div><div><div class="section-title">Strategic Business Insights</div><div class="section-subtitle">Data-driven findings translated to actionable business intelligence</div></div></div>
-<div class="grid-3">
-<div class="card insight-card"><div class="insight-number">01</div><div class="insight-title">SEG_B = Marketing Multiplier</div><div class="insight-text">SEG_B HCPs show <strong>3.5x higher engagement</strong> with detailing and direct mail. They actively respond to new therapy positioning and are early adopters of oral ATx. Prioritize these 3,349 physicians for premium rep access.</div></div>
-<div class="card insight-card"><div class="insight-number">02</div><div class="insight-title">SEG_C Conversion Window</div><div class="insight-text">~70% of SEG_C physicians show partial behavioral overlap with SEG_B on patient preference metrics. A <strong>6-month targeted campaign</strong> (peer-led education + sample programs) could shift ~1,500 HCPs toward relationship-centric prescribing.</div></div>
-<div class="card insight-card"><div class="insight-number">03</div><div class="insight-title">Temporal Patterns Matter</div><div class="insight-text">Deep learning captured <strong>75% recall on elite HCPs</strong> using 86-week sequences — proving that longitudinal behavioral data (not just demographics) is the key differentiator for high-value physician identification.</div></div>
-<div class="card insight-card"><div class="insight-number">04</div><div class="insight-title">Prescription Drift = Risk</div><div class="insight-text">TRx and NRx features show <strong>PSI &gt; 0.30</strong> — significant distributional shift. If prescribing patterns are changing, our segment definitions may need recalibration. <strong>Monthly monitoring required.</strong></div></div>
-<div class="card insight-card"><div class="insight-number">05</div><div class="insight-title">Unlock 9K Unlabeled HCPs</div><div class="insight-text">9,032 HCPs remain unclassified. Conservative pseudo-labeling can expand the labeled pool by <strong>40-50%</strong>, revealing hidden SEG_B physicians currently receiving no targeted outreach.</div></div>
-<div class="card insight-card"><div class="insight-number">06</div><div class="insight-title">ROI Optimization</div><div class="insight-text">Current flat approach treats all HCPs equally. Segment-aware allocation could <strong>reduce marketing waste by 35%</strong> by deprioritizing SEG_A (low-response) and reallocating budget to SEG_B/C conversion programs.</div></div>
-</div>
-</section>
-
-<!-- 7. Drift Monitor -->
-<section id="sec-drift" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon coral"><i class="fas fa-wave-square"></i></div><div><div class="section-title">Population Drift Alert</div><div class="section-subtitle">Feature stability monitoring — PSI thresholds for model retraining triggers</div></div></div>
+<!-- ==================== TAB: DRIFT ==================== -->
+<div id="tab-drift" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-shield-alt"></i></div><div><div class="section-title">Population Drift Monitor</div><div class="section-subtitle">Feature stability index — PSI thresholds for model retraining triggers</div></div></div>
 <div class="card"><div class="chart-title">PSI Scores by Feature Category</div><div class="chart-container"><canvas id="chart-psi" height="220"></canvas></div>
 <div style="display:flex;gap:20px;margin-top:16px;font-size:12px">
-<span><span class="badge badge-red">🔴 Critical (&gt;0.25)</span> Trigger retrain</span>
-<span><span class="badge badge-amber">🟡 Warning (0.10-0.25)</span> Flag for review</span>
-<span><span class="badge badge-green">🟢 Stable (&lt;0.10)</span> No action</span>
+<span class="badge badge-red">Critical (above 0.25) — Retrain</span>
+<span class="badge badge-amber">Warning (0.10–0.25) — Review</span>
+<span class="badge badge-green">Stable (below 0.10) — No action</span>
+</div></div>
+<div class="grid-3" style="margin-top:20px">
+<div class="card"><div class="kpi-label" style="margin-bottom:6px">Highest PSI Feature</div><div style="font-size:20px;font-weight:700;color:#dc2626">UC_TRX — 0.38</div><div class="kpi-sub">Exceeds critical threshold</div></div>
+<div class="card"><div class="kpi-label" style="margin-bottom:6px">Features Above Warning</div><div style="font-size:20px;font-weight:700;color:#d97706">5 of 6</div><div class="kpi-sub">Prescription and marketing features drifting</div></div>
+<div class="card"><div class="kpi-label" style="margin-bottom:6px">Recommended Action</div><div style="font-size:20px;font-weight:700;color:#0051a5">Retrain Pipeline</div><div class="kpi-sub">Before next quarterly review</div></div>
 </div>
 </div>
-</section>
 
-<!-- 8. Strategic Actions -->
-<section id="sec-actions" class="dashboard-section animate-in">
-<div class="section-header"><div class="section-icon green"><i class="fas fa-rocket"></i></div><div><div class="section-title">Strategic Recommendations</div><div class="section-subtitle">Prioritized actions for the commercial and medical affairs teams</div></div></div>
-<div class="grid-4">
-<div class="card action-card"><div class="action-icon">🎯</div><div class="action-title">Target SEG_B for KOL Programs</div><div class="action-text">Enroll top SEG_B physicians in speaker programs and advisory boards. They are natural advocates for oral ATx value propositions.</div><div style="margin-top:12px"><span class="badge badge-green">High Impact</span></div></div>
-<div class="card action-card"><div class="action-icon">🔄</div><div class="action-title">Launch SEG_C Nurture Track</div><div class="action-text">Design a 6-month multi-channel campaign (peer education + samples + data sharing) to shift SEG_C physicians toward SEG_B behavior.</div><div style="margin-top:12px"><span class="badge badge-sky">Medium-Term</span></div></div>
-<div class="card action-card"><div class="action-icon">📊</div><div class="action-title">Deploy Drift Monitoring</div><div class="action-text">Implement automated PSI alerts for TRx/NRx features. When PSI exceeds 0.25, trigger model retraining to maintain classification accuracy.</div><div style="margin-top:12px"><span class="badge badge-amber">Critical</span></div></div>
-<div class="card action-card"><div class="action-icon">🔓</div><div class="action-title">Classify Unlabeled Pool</div><div class="action-text">Apply pseudo-labeling pipeline to the 9,032 unclassified HCPs to discover hidden high-value physicians receiving no targeted outreach.</div><div style="margin-top:12px"><span class="badge badge-blue">Quick Win</span></div></div>
+<!-- ==================== TAB: ACTIONS ==================== -->
+<div id="tab-actions" class="tab-content">
+<div class="section-header"><div class="section-icon"><i class="fas fa-rocket"></i></div><div><div class="section-title">Strategic Recommendations</div><div class="section-subtitle">Prioritized actions for commercial and medical affairs teams</div></div></div>
+<div class="grid-2">
+<div class="card action-card"><div class="action-icon-wrap"><i class="fas fa-bullseye"></i></div><div class="action-title">Target SEG_B for KOL Programs</div><div class="action-text">Enroll top SEG_B physicians in speaker programs and advisory boards. They are natural advocates for oral ATx value propositions and drive peer adoption.</div><div style="margin-top:12px"><span class="badge badge-green">High Impact</span></div></div>
+<div class="card action-card"><div class="action-icon-wrap"><i class="fas fa-sync-alt"></i></div><div class="action-title">Launch SEG_C Nurture Track</div><div class="action-text">Design a 6-month multi-channel campaign (peer education, samples, data sharing) to shift SEG_C physicians toward SEG_B behavior patterns.</div><div style="margin-top:12px"><span class="badge badge-sky">Medium-Term</span></div></div>
+<div class="card action-card"><div class="action-icon-wrap"><i class="fas fa-chart-bar"></i></div><div class="action-title">Deploy Drift Monitoring</div><div class="action-text">Implement automated PSI alerts for TRx/NRx features. When PSI exceeds 0.25, trigger model retraining to maintain classification accuracy.</div><div style="margin-top:12px"><span class="badge badge-amber">Critical</span></div></div>
+<div class="card action-card"><div class="action-icon-wrap"><i class="fas fa-unlock"></i></div><div class="action-title">Classify Unlabeled Pool</div><div class="action-text">Apply pseudo-labeling pipeline to the 9,032 unclassified HCPs to discover hidden high-value physicians receiving no targeted outreach today.</div><div style="margin-top:12px"><span class="badge badge-blue">Quick Win</span></div></div>
 </div>
-</section>
+</div>
 
-</main>
-</div>
 <script src="app.js"></script>
 </body>
 </html>
