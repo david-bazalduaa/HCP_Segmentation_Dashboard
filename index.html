@@ -7,7 +7,7 @@
 <meta name="description" content="Longitudinal behavioral analysis for Ulcerative Colitis HCP segmentation — powered by 191-column deep analytics">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -52,7 +52,7 @@
 <div class="card"><div class="chart-title">Population Distribution</div><div class="chart-container" style="height:300px"><canvas id="chart-funnel"></canvas></div></div>
 <div class="card"><div class="chart-title">Labeled Target Breakdown</div><div class="chart-container" style="height:300px"><canvas id="chart-doughnut"></canvas></div></div>
 </div>
-<div class="card" style="margin-top:24px"><div class="chart-title">Key Metrics by Segment (Labeled Cohort)</div><div id="plot-heatmap" class="plotly-chart"></div></div>
+<div class="card" style="margin-top:24px"><div class="chart-title">Key Metrics by Segment (Labeled Cohort)</div><div class="chart-container" style="height:340px"><canvas id="chart-heatmap"></canvas></div></div>
 </div>
 
 <!-- ==================== TAB 2: SEGMENT DEEP-DIVE ==================== -->
@@ -101,8 +101,8 @@
 </div>
 
 <div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Segment Comparison: 4 Key Metrics</div><div id="plot-segment-bars" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Medication Mix by Segment</div><div id="plot-med-mix" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">UC TRx Volume by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-segment-bars"></canvas></div></div>
+<div class="card"><div class="chart-title">Medication Mix by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-med-mix"></canvas></div></div>
 </div>
 
 <!-- HCP 86-Week Timelines (restored from V1) -->
@@ -119,11 +119,8 @@
 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
 <div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">14.2</div></div>
 <div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">High</div></div>
-<div class="persona-metric"><div class="persona-metric-label">XGBoost Probability</div><div class="persona-metric-value" style="color:var(--accent-green)">89%</div></div>
-<div class="persona-metric"><div class="persona-metric-label">CNN Temporal Score</div><div class="persona-metric-value" style="color:var(--accent-green)">92%</div></div>
 </div>
 <div class="chart-container" style="height:320px"><canvas id="chart-pb-main"></canvas></div>
-<div class="alert-box alert-success"><i class="fas fa-check-circle"></i><span><strong>Model Interaction:</strong> Both tabular and sequential models accurately classify this HCP due to highly correlated engagement and NRx growth signals over the 86-week period.</span></div>
 </div></div>
 <!-- Dr. Williams (SEG_C) -->
 <div id="sub-pc" class="sub-panel">
@@ -132,11 +129,8 @@
 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
 <div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">6.8</div></div>
 <div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">Moderate</div></div>
-<div class="persona-metric"><div class="persona-metric-label">XGBoost Probability</div><div class="persona-metric-value" style="color:var(--accent-amber)">45%</div></div>
-<div class="persona-metric"><div class="persona-metric-label">CNN Temporal Score</div><div class="persona-metric-value" style="color:var(--pfizer-deep)">78%</div></div>
 </div>
 <div class="chart-container" style="height:320px"><canvas id="chart-pc-main"></canvas></div>
-<div class="alert-box alert-info"><i class="fas fa-info-circle"></i><span><strong>Model Interaction:</strong> Tabular models (XGBoost) often misclassify this HCP as SEG_A due to low volume. The Deep Sequence model (CNN+GRU) accurately captures the delayed temporal relationship between marketing and Rx.</span></div>
 </div></div>
 <!-- Dr. Lopez (SEG_A) -->
 <div id="sub-pa" class="sub-panel">
@@ -145,11 +139,8 @@
 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
 <div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">12.0</div></div>
 <div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">Low</div></div>
-<div class="persona-metric"><div class="persona-metric-label">XGBoost Probability</div><div class="persona-metric-value" style="color:var(--pfizer-blue)">94%</div></div>
-<div class="persona-metric"><div class="persona-metric-label">CNN Temporal Score</div><div class="persona-metric-value" style="color:var(--pfizer-blue)">88%</div></div>
 </div>
 <div class="chart-container" style="height:320px"><canvas id="chart-pa-main"></canvas></div>
-<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Model Interaction:</strong> Flat trajectory. Easily identified by both models as static.</span></div>
 </div></div>
 </div>
 
@@ -164,13 +155,13 @@
 </div>
 
 <div class="grid-2">
-<div class="card"><div class="chart-title">Adoption Funnel by Segment (% of each segment)</div><div id="plot-adoption-pct" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Adoption Funnel by Segment (Absolute Count)</div><div id="plot-adoption-abs" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Adoption Funnel by Segment (% of each segment)</div><div class="chart-container" style="height:300px"><canvas id="chart-adoption-pct"></canvas></div></div>
+<div class="card"><div class="chart-title">Adoption Funnel by Segment (Absolute Count)</div><div class="chart-container" style="height:300px"><canvas id="chart-adoption-abs"></canvas></div></div>
 </div>
 
 <div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Growth Signals: Who Is Accelerating?</div><div id="plot-growth-signals" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Pfizer TRx: 86-Week Average vs. Recent 8 Weeks</div><div id="plot-trend-bars" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Growth Signals: Who Is Accelerating?</div><div class="chart-container" style="height:300px"><canvas id="chart-growth-signals"></canvas></div></div>
+<div class="card"><div class="chart-title">Pfizer TRx: 86-Week Average vs. Recent 8 Weeks</div><div class="chart-container" style="height:300px"><canvas id="chart-trend-bars"></canvas></div></div>
 </div>
 </div>
 
@@ -187,11 +178,11 @@
 <div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Competitive Pressure:</strong> Brand2 outprescribes Pfizer by 3.9–4.4× across all segments. The gap is widest in SEG_B (4.43×), the very segment with the highest Pfizer growth trajectory — indicating an active battleground for share.</span></div>
 
 <div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Pfizer vs Brand2: Market Share of UC (%) by Segment</div><div id="plot-competitive-share" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Brand2/Pfizer Prescribing Ratio by Segment</div><div id="plot-competitive-ratio" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Pfizer vs Brand2: Market Share of UC (%) by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-comp-share"></canvas></div></div>
+<div class="card"><div class="chart-title">Brand2/Pfizer Prescribing Ratio by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-comp-ratio"></canvas></div></div>
 </div>
 
-<div class="card" style="margin-top:24px"><div class="chart-title">UC TRx Volume vs Pfizer Market Share (Labeled HCPs)</div><div id="plot-scatter-uc" class="plotly-chart" style="min-height:420px"></div></div>
+<div class="card" style="margin-top:24px"><div class="chart-title">UC TRx Volume vs Pfizer Market Share (Labeled HCPs)</div><div class="chart-container" style="height:420px"><canvas id="chart-scatter-uc"></canvas></div></div>
 </div>
 
 <!-- ==================== TAB 5: REP ENGAGEMENT ==================== -->
@@ -206,8 +197,8 @@
 </div>
 
 <div class="grid-2">
-<div class="card"><div class="chart-title">Engagement Metrics by Segment</div><div id="plot-engagement" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Rep Visits vs Pfizer Prescribing (Scatter)</div><div id="plot-scatter-engagement" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Engagement Metrics by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-engagement"></canvas></div></div>
+<div class="card"><div class="chart-title">Rep Visits vs Pfizer Prescribing (Scatter)</div><div class="chart-container" style="height:300px"><canvas id="chart-scatter-eng"></canvas></div></div>
 </div>
 </div>
 
@@ -224,8 +215,8 @@
 <div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage Gap:</strong> 5,733 of 9,032 unlabeled HCPs (63.5%) have zero rep visits. Among Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales representative.</span></div>
 
 <div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Opportunity Score Distribution (9,032 Unlabeled HCPs)</div><div id="plot-opportunity-hist" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Click a red point to identify the HCP below ↓</div><div id="plot-opportunity-scatter" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Opportunity Score Distribution (9,032 Unlabeled HCPs)</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div></div>
+<div class="card"><div class="chart-title">Click a red point to identify the HCP below ↓</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div></div>
 </div>
 
 <!-- HCP Detail Panel (populated on click) -->
@@ -241,8 +232,8 @@
 <div class="section-header"><div class="section-icon"><i class="fas fa-stethoscope"></i></div><div><div class="section-title">Specialty & Demographics</div><div class="section-subtitle">HCP specialty distribution across segments</div></div></div>
 
 <div class="grid-2">
-<div class="card"><div class="chart-title">HCPs by Specialty and Segment (Stacked)</div><div id="plot-specialty-stack" class="plotly-chart"></div></div>
-<div class="card"><div class="chart-title">Specialty Composition (% within each specialty)</div><div id="plot-specialty-heatmap" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">HCPs by Specialty and Segment (Stacked)</div><div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div></div>
+<div class="card"><div class="chart-title">Specialty Composition (% within each specialty)</div><div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div></div>
 </div>
 </div>
 
@@ -250,7 +241,7 @@
 <div id="tab-drift" class="tab-content">
 <div class="section-header"><div class="section-icon"><i class="fas fa-shield-alt"></i></div><div><div class="section-title">Feature PSI Drift Monitor</div><div class="section-subtitle">Evaluating Population Stability Index (PSI) to trigger retraining</div></div></div>
 <div class="grid-2">
-<div class="card"><div class="chart-title">Top Drifting Features (PSI > 0.10)</div><div id="plot-psi" class="plotly-chart"></div></div>
+<div class="card"><div class="chart-title">Top Drifting Features (PSI > 0.10)</div><div class="chart-container" style="height:300px"><canvas id="chart-psi"></canvas></div></div>
 <div class="card">
 <div class="kpi-label" style="margin-bottom:6px">Highest Risk Indicator</div>
 <div style="font-size:24px;font-weight:800;color:var(--accent-coral);letter-spacing:-0.5px">UC_TRX Drift Exceeds 0.38</div>
