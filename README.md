@@ -4,6 +4,9 @@ An interactive, business-focused dashboard for analyzing Healthcare Professional
 
 This project integrates deep behavioral analytics from a 191-column dataset (`hcp_analysis_clean.parquet`), translating complex machine learning outputs into actionable insights for commercial teams.
 
+## Live Demo
+You can access the interactive dashboard here: [davidbazaldua.github.io/HCP_Segmentation_Dashboard/](https://david-bazalduaa.github.io/HCP_Segmentation_Dashboard/)
+
 ## Features & Architecture
 
 ### 1. Unified Chart.js Engine
@@ -14,7 +17,7 @@ The dashboard is entirely built using **Chart.js**, ensuring a consistent, fast,
 - Opportunity scatter plots capable of rendering thousands of HCP data points efficiently.
 
 ### 2. Business Intelligence Tabs
-The dashboard is organized into 8 strategic tabs:
+The dashboard is organized into 7 strategic tabs:
 1. **Executive Summary:** High-level segment distribution and normalized metric comparisons.
 2. **Segment Deep-Dive:** Interactive timelines profiling key HCP personas (e.g., Traditional, Relational, Didactic).
 3. **Brand Adoption:** Funnel analysis of HCP progression from "Never Tried" to "Active" prescribing.
@@ -22,7 +25,6 @@ The dashboard is organized into 8 strategic tabs:
 5. **Rep Engagement:** Measuring the efficiency of marketing channels (Details/Rx ratios).
 6. **Unlabeled Opportunity:** An interactive scatter plot identifying high-value HCPs with zero rep visits. Clicking an HCP reveals their specific ID and KPIs for outreach prioritization.
 7. **Specialty Mix:** Stacked views of HCP specialties driving segment volume.
-8. **PSI Drift:** Monitoring data stability to trigger model retraining.
 
 ### 3. Data Integration
 The frontend is completely decoupled from the data extraction layer. 

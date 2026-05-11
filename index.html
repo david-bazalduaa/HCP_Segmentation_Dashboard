@@ -31,7 +31,7 @@
 <button class="tab-btn" data-tab="tab-engagement"><i class="fas fa-handshake"></i> Rep Engagement</button>
 <button class="tab-btn" data-tab="tab-opportunity"><i class="fas fa-crosshairs"></i> Unlabeled Opportunity</button>
 <button class="tab-btn" data-tab="tab-specialty"><i class="fas fa-stethoscope"></i> Specialty Mix</button>
-<button class="tab-btn" data-tab="tab-drift"><i class="fas fa-shield-alt"></i> PSI Drift</button>
+
 </nav>
 
 <!-- ==================== TAB 1: EXECUTIVE SUMMARY ==================== -->
@@ -237,30 +237,7 @@
 </div>
 </div>
 
-<!-- ==================== TAB 8: PSI DRIFT ==================== -->
-<div id="tab-drift" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-shield-alt"></i></div><div><div class="section-title">Feature PSI Drift Monitor</div><div class="section-subtitle">Evaluating Population Stability Index (PSI) to trigger retraining</div></div></div>
-<div class="grid-2">
-<div class="card"><div class="chart-title">Top Drifting Features (PSI > 0.10)</div><div class="chart-container" style="height:300px"><canvas id="chart-psi"></canvas></div></div>
-<div class="card">
-<div class="kpi-label" style="margin-bottom:6px">Highest Risk Indicator</div>
-<div style="font-size:24px;font-weight:800;color:var(--accent-coral);letter-spacing:-0.5px">UC_TRX Drift Exceeds 0.38</div>
-<div style="font-size:14px;color:var(--text-secondary);margin-top:12px;line-height:1.6">The EDA revealed severe data skewness and population drift in key prescription variables. A PSI score > 0.25 indicates significant distributional shifts.</div>
-<div class="alert-box alert-warning" style="margin-top:16px"><i class="fas fa-exclamation-triangle"></i><span><strong>Mandatory Retraining:</strong> Due to extreme drift in <code>UC_TRX</code> and <code>UC_NRX</code>, models must be retrained before applying pseudo-labels to the 9,032 unlabeled pool.</span></div>
-<div style="margin-top:20px">
-<div class="chart-title">Alert Thresholds</div>
-<table class="data-table">
-<thead><tr><th>Level</th><th>PSI Range</th><th>Action</th></tr></thead>
-<tbody>
-<tr><td><span class="badge badge-green">Stable</span></td><td>< 0.10</td><td>No action</td></tr>
-<tr><td><span class="badge badge-amber">Warning</span></td><td>0.10 – 0.25</td><td>Flag for review</td></tr>
-<tr><td><span class="badge badge-red">Critical</span></td><td>> 0.25</td><td>Trigger retraining</td></tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
+
 
 <script src="app.js"></script>
 </body>

@@ -43,7 +43,7 @@ function loadTab(id){
   if(id==='tab-engagement'){buildEngagement();buildScatterEng();}
   if(id==='tab-opportunity'){buildOpportunityHist();buildOpportunityScatter();}
   if(id==='tab-specialty'){buildSpecialtyStack();buildSpecialtyPct();}
-  if(id==='tab-drift'){buildPSI();}
+
 }
 
 /* Counters */
@@ -154,13 +154,7 @@ function buildSpecialtyPct(){
   mkHBar('chart-spec-pct',sp,[{label:'SEG_A %',data:pctA,backgroundColor:CA},{label:'SEG_B %',data:pctB,backgroundColor:CB},{label:'SEG_C %',data:pctC,backgroundColor:CC}],{x:{stacked:true,max:100}});
 }
 
-/* ==================== TAB 8: PSI DRIFT ==================== */
-function buildPSI(){
-  const items=['Prescription Vol (TRx)','New Patient Starts','Marketing Engagement','Rep Visit Frequency','Geographic Shifts','Practice Type'];
-  const vals=[0.38,0.32,0.29,0.27,0.15,0.07];
-  const colors=vals.map(v=>v>0.25?RED:v>0.10?AMBER:GREEN);
-  mkHBar('chart-psi',items,[{data:vals,backgroundColor:colors,borderRadius:6,borderSkipped:false}],{x:{max:0.5}});
-}
+
 
 /* Init */
 document.addEventListener('DOMContentLoaded',()=>{initTabs();loadTab('tab-overview');animateCounters();});
