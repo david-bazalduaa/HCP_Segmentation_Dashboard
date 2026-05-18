@@ -210,41 +210,42 @@ async function runModelPrediction() {
       await pyodideInstance.loadPackage(['scikit-learn', 'numpy']);
     }
 
-    resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading model and running inference...';
+    resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading model and running inference...';
 
-    // Use Python code (executed via JavaScript) to download the model directly from this URL
     const pythonCode = `
 import pyodide.http
 import numpy as np
 import joblib
 
-url = "https://huggingface.co/pfizer-project-team/binary-segA-vs-segBC/resolve/main/sklearn_model.joblib"
-
-# In Pyodide, we must use pyfetch to make HTTPS requests
-response = await pyodide.http.pyfetch(url)
+# Load the model from the same origin (no HF auth, no CORS, no gated-repo issues).
+# This is the same artifact as best_binary_segA_vs_segBC.joblib on Hugging Face.
+response = await pyodide.http.pyfetch("sklearn_model.joblib")
 with open("sklearn_model.joblib", "wb") as f:
     f.write(await response.bytes())
 
-# Load the scikit-learn model
 model = joblib.load("sklearn_model.joblib")
 
-# The model expects a flattened tensor of exactly 5590 features (86 weeks * 65 features)
-# Create a dummy numpy array of shape (1, 5590) of zeros for the prediction
-dummy_features = np.zeros((1, 5590))
+# Tensor shape: (1, 5590) = 86 weeks * 65 features, flattened.
+# Use small random values to simulate a real HCP rather than an all-zero edge case.
+rng = np.random.default_rng(42)
+sample = rng.normal(loc=0.0, scale=0.1, size=(1, 5590))
 
-# Run the prediction using model.predict()
-prediction = model.predict(dummy_features)
-int(prediction[0])
+# model_metadata.json on HF specifies threshold = 0.45 for the SEG_B/C class.
+proba_bc = float(model.predict_proba(sample)[0, 1])
+threshold = 0.45
+label = 1 if proba_bc >= threshold else 0
+
+(label, proba_bc)
 `;
 
-    // Execute python code and wait for result
     const result = await pyodideInstance.runPythonAsync(pythonCode);
+    const [label, probaBc] = result.toJs();
+    const pct = (probaBc * 100).toFixed(1);
 
-    // Return the result to JS and update UI
-    if (result === 1) {
-      resultDiv.innerHTML = '<i class="fas fa-check-circle" style="color: var(--accent-green);"></i> SEG_B/C (High Potential)';
+    if (label === 1) {
+      resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: var(--accent-green);"></i> SEG_B/C (High Potential) — p=${pct}%`;
     } else {
-      resultDiv.innerHTML = '<i class="fas fa-circle" style="color: var(--text-muted);"></i> SEG_A (Traditionalist)';
+      resultDiv.innerHTML = `<i class="fas fa-circle" style="color: var(--text-muted);"></i> SEG_A (Traditionalist) — p(BC)=${pct}%`;
     }
 
   } catch (error) {
