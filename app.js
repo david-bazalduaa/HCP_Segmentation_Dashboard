@@ -258,11 +258,11 @@ label = 1 if proba_bc >= threshold else 0
 }
 
 /* Init */
-document.addEventListener('DOMContentLoaded', () => { 
-  initTabs(); 
-  loadTab('tab-overview'); 
-  animateCounters(); 
-  
+document.addEventListener('DOMContentLoaded', () => {
+  initTabs();
+  loadTab('tab-overview');
+  animateCounters();
+
   // Bind live prediction button
   const predictBtn = document.getElementById('btn-predict');
   if (predictBtn) {
