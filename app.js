@@ -41,7 +41,7 @@ function loadTab(id){
   if(id==='tab-adoption'){buildAdoptionPct();buildAdoptionAbs();buildGrowthSignals();buildTrendBars();}
   if(id==='tab-competitive'){buildCompShare();buildCompRatio();buildScatterUC();}
   if(id==='tab-engagement'){buildEngagement();buildScatterEng();}
-  if(id==='tab-opportunity'){buildOpportunityHist();buildOpportunityScatter();}
+  if(id==='tab-opportunity'){buildOpportunityCharts();}
   if(id==='tab-specialty'){buildSpecialtyStack();buildSpecialtyPct();}
 
 }
@@ -99,25 +99,44 @@ function buildScatterEng(){const ctx=document.getElementById('chart-scatter-eng'
   new Chart(ctx,{type:'scatter',data:{datasets:[{label:'SEG_A',data:mk(400,5.28,0.0005),backgroundColor:CA+'66',pointRadius:3},{label:'SEG_B',data:mk(300,8.94,0.0018),backgroundColor:CB+'66',pointRadius:3},{label:'SEG_C',data:mk(200,8.71,0.0017),backgroundColor:CC+'66',pointRadius:3}]},options:{maintainAspectRatio:false,responsive:true,plugins:{legend:{position:'bottom'}},scales:{x:{title:{display:true,text:'Total Rep Visits (86 wks)'},grid:{color:'#f1f5f9'}},y:{title:{display:true,text:'Pfizer TRx / week'},grid:{color:'#f1f5f9'}}}}});}
 
 /* ==================== TAB 6: OPPORTUNITY ==================== */
-function buildOpportunityHist(){
-  const bins=[1750,20,31,30,27,47,295,308,514,1108,890,790,752,754,650,466,258,105,51,8,14,10,18,13,17,27,33,20,16,10];
-  const edges=[];for(let i=0;i<=30;i++)edges.push(0.295+i*(0.941-0.295)/30);
-  const labels=edges.slice(0,-1).map((e,i)=>((e+edges[i+1])/2).toFixed(2));
-  mkBar('chart-opp-hist',labels,[{data:bins,backgroundColor:CU+'cc',borderRadius:2,borderSkipped:false}],{plugins:{legend:{display:false}},x:{ticks:{maxTicksLimit:10,font:{size:10}}}});
-}
-
-function buildOpportunityScatter(){
+function buildOpportunityCharts(){
   fetch('opportunity_data.json').then(r=>r.json()).then(data=>{
-    const nv=data.noVisits.map(h=>({x:h.uc,y:h.sc,...h}));
-    const cv=data.covered.map(h=>({x:h.uc,y:h.sc,...h}));
+    // Add a tiny random jitter to the y-axis (Score) so overlapping points are visible
+    // We keep the original 'uc' and 'sc' to show in tooltips
+    const jitter = () => (Math.random() - 0.5) * 0.04;
+    const nv=data.noVisits.map(h=>({x:h.uc, y:Math.max(0, h.sc + jitter()), ...h}));
+    const cv=data.covered.map(h=>({x:h.uc, y:Math.max(0, h.sc + jitter()), ...h}));
+    
+    // Histogram
+    const all = [...data.noVisits, ...data.covered];
+    const scores = all.map(h=>h.sc);
+    const minSc = Math.min(...scores);
+    const maxSc = Math.max(...scores);
+    
+    const numBins = 20;
+    const binWidth = (maxSc > minSc) ? (maxSc - minSc) / numBins : 1;
+    let edges = [];
+    for(let i=0; i<=numBins; i++) edges.push(minSc + i * binWidth);
+    
+    let bins = Array(numBins).fill(0);
+    scores.forEach(s => {
+      let b = Math.floor((s - minSc) / binWidth);
+      if (b >= numBins) b = numBins - 1;
+      bins[b]++;
+    });
+    
+    const histLabels = edges.slice(0, -1).map((e, i) => ((e + edges[i+1])/2).toFixed(2));
+    mkBar('chart-opp-hist', histLabels, [{data:bins, backgroundColor:CU+'cc', borderRadius:2, borderSkipped:false}], {plugins:{legend:{display:false}},x:{ticks:{maxTicksLimit:10,font:{size:10}}}});
+
+    // Scatter Plot
     const ctx=document.getElementById('chart-opp-scatter');if(!ctx)return;
     const chart=new Chart(ctx,{type:'scatter',data:{datasets:[
-      {label:'No Rep Visits',data:nv,backgroundColor:RED+'99',pointRadius:4,pointStyle:'circle'},
-      {label:'Covered',data:cv,backgroundColor:CB+'77',pointRadius:4,pointStyle:'rect'}
+      {label:'No Rep Visits',data:nv,backgroundColor:RED+'aa',pointRadius:4,pointStyle:'circle'},
+      {label:'Covered',data:cv,backgroundColor:CB+'88',pointRadius:4,pointStyle:'rect'}
     ]},options:{maintainAspectRatio:false,responsive:true,
       plugins:{legend:{position:'bottom'},tooltip:{callbacks:{
         title:pts=>{const p=pts[0];return p.datasetIndex===0?'ID: '+p.raw.id:'Covered HCP';},
-        label:p=>[`UC TRx: ${p.raw.x.toFixed(4)}/wk`,`Score: ${p.raw.y.toFixed(4)}`,p.raw.sp?`Specialty: ${p.raw.sp}`:'']
+        label:p=>[`UC TRx: ${p.raw.uc.toFixed(4)}/wk`,`Score: ${p.raw.sc.toFixed(4)}`,p.raw.sp?`Specialty: ${p.raw.sp}`:'']
       }}},
       scales:{x:{title:{display:true,text:'UC TRx Mean (weekly)'},grid:{color:'#f1f5f9'}},y:{title:{display:true,text:'Opportunity Score'},grid:{color:'#f1f5f9'}}},
       onClick:(evt,els)=>{

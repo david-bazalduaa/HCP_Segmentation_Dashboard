@@ -41,7 +41,7 @@
 <div class="grid-5">
 <div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Total HCPs</span><div class="kpi-icon" style="background:#f1f5f9;color:#64748b"><i class="fas fa-users"></i></div></div><div class="kpi-value" data-count="20931">0</div><div class="kpi-sub">86-week longitudinal panel</div></div>
 <div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Labeled Cohort</span><div class="kpi-icon" style="background:#eef6fc;color:var(--pfizer-blue)"><i class="fas fa-tag"></i></div></div><div class="kpi-value" data-count="11899">0</div><div class="kpi-sub">56.9% of total market</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span><div class="kpi-icon" style="background:#f5f3ff;color:var(--seg-unlabeled)"><i class="fas fa-search"></i></div></div><div class="kpi-value" data-count="9032">0</div><div class="kpi-sub">43.1% pending classification</div></div>
+<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span><div class="kpi-icon" style="background:#f5f3ff;color:var(--seg-unlabeled)"><i class="fas fa-search"></i></div></div><div class="kpi-value" data-count="633">0</div><div class="kpi-sub">Pending classification</div></div>
 <div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Feature Columns</span><div class="kpi-icon" style="background:#ecfaff;color:var(--pfizer-sky)"><i class="fas fa-database"></i></div></div><div class="kpi-value" data-count="191">0</div><div class="kpi-sub">7 feature blocks engineered</div></div>
 <div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Deep Learning Recall</span><div class="kpi-icon" style="background:#ecfdf5;color:var(--accent-green)"><i class="fas fa-brain"></i></div></div><div class="kpi-value" data-count="75" data-suffix="%">0</div><div class="kpi-sub">On minority class (SEG_C)</div></div>
 </div>
@@ -204,18 +204,18 @@
 
 <!-- ==================== TAB 6: UNLABELED OPPORTUNITY ==================== -->
 <div id="tab-opportunity" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-crosshairs"></i></div><div><div class="section-title">Unlabeled HCP Opportunity</div><div class="section-subtitle">Prioritizing 9,032 unclassified HCPs for commercial outreach</div></div></div>
+<div class="section-header"><div class="section-icon"><i class="fas fa-crosshairs"></i></div><div><div class="section-title">Unlabeled HCP Opportunity</div><div class="section-subtitle">Prioritizing 633 unclassified HCPs for commercial outreach</div></div></div>
 
 <div class="grid-3" style="margin-bottom:24px">
-<div class="card tier-card tier-1"><div class="tier-value" style="color:var(--accent-green)">1,600</div><div class="tier-label">Tier 1 — Immediate</div><div class="tier-desc">Score ≥ 0.60. Highest prescribing + growth signals.</div></div>
-<div class="card tier-card tier-2"><div class="tier-value" style="color:var(--accent-amber)">5,643</div><div class="tier-label">Tier 2 — Validate</div><div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div></div>
-<div class="card tier-card tier-3"><div class="tier-value" style="color:var(--text-muted)">1,789</div><div class="tier-label">Tier 3 — Monitor</div><div class="tier-desc">Score < 0.35. Low activity, monitor for emergence.</div></div>
+<div class="card tier-card tier-1"><div class="tier-value" style="color:var(--accent-green)">43</div><div class="tier-label">Tier 1 — Immediate</div><div class="tier-desc">Score ≥ 0.60. Highest prescribing + growth signals.</div></div>
+<div class="card tier-card tier-2"><div class="tier-value" style="color:var(--accent-amber)">22</div><div class="tier-label">Tier 2 — Validate</div><div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div></div>
+<div class="card tier-card tier-3"><div class="tier-value" style="color:var(--text-muted)">568</div><div class="tier-label">Tier 3 — Monitor</div><div class="tier-desc">Score < 0.35. Low activity, monitor for emergence.</div></div>
 </div>
 
-<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage Gap:</strong> 5,733 of 9,032 unlabeled HCPs (63.5%) have zero rep visits. Among Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales representative.</span></div>
+<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales representative.</span></div>
 
 <div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Opportunity Score Distribution (9,032 Unlabeled HCPs)</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div></div>
+<div class="card"><div class="chart-title">Opportunity Score Distribution (633 Unlabeled HCPs)</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div></div>
 <div class="card"><div class="chart-title">Click a red point to identify the HCP below ↓</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div></div>
 </div>
 
