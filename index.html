@@ -1,244 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HCP Segmentation Dashboard — Pfizer UC</title>
-<meta name="description" content="Longitudinal behavioral analysis for Ulcerative Colitis HCP segmentation — powered by 191-column deep analytics">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>HCP Segmentation Dashboard — Pfizer UC</title>
+    <meta name="description"
+        content="Longitudinal behavioral analysis for Ulcerative Colitis HCP segmentation — powered by 191-column deep analytics">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
+
 <body>
 
-<!-- Top Header -->
-<header class="top-header">
-<div class="top-header-left">
-<img src="Pfizer_Logo_Color_RGB.png" alt="Pfizer">
-<h1>HCP Segmentation Insights</h1>
-<span>Ulcerative Colitis — 191-Feature Deep Analytics</span>
-</div>
-<div><span class="header-badge">Pipeline Stable</span></div>
-</header>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="top-header-left">
+            <img src="Pfizer_Logo_Color_RGB.png" alt="Pfizer">
+            <h1>HCP Segmentation Insights</h1>
+            <span>Ulcerative Colitis — 191-Feature Deep Analytics</span>
+        </div>
+        <div><span class="header-badge">Pipeline Stable</span></div>
+    </header>
 
-<!-- Tab Navigation -->
-<nav class="tab-nav">
-<button class="tab-btn active" data-tab="tab-overview"><i class="fas fa-chart-pie"></i> Executive Summary</button>
-<button class="tab-btn" data-tab="tab-segments"><i class="fas fa-layer-group"></i> Segment Deep-Dive</button>
-<button class="tab-btn" data-tab="tab-adoption"><i class="fas fa-rocket"></i> Brand Adoption</button>
-<button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Competitive Intel</button>
-<button class="tab-btn" data-tab="tab-engagement"><i class="fas fa-handshake"></i> Rep Engagement</button>
-<button class="tab-btn" data-tab="tab-opportunity"><i class="fas fa-crosshairs"></i> Unlabeled Opportunity</button>
-<button class="tab-btn" data-tab="tab-specialty"><i class="fas fa-stethoscope"></i> Specialty Mix</button>
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-overview"><i class="fas fa-chart-pie"></i> Executive
+            Summary</button>
+        <button class="tab-btn" data-tab="tab-segments"><i class="fas fa-layer-group"></i> Segment Deep-Dive</button>
+        <button class="tab-btn" data-tab="tab-adoption"><i class="fas fa-rocket"></i> Brand Adoption</button>
+        <button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Competitive Intel</button>
+        <button class="tab-btn" data-tab="tab-engagement"><i class="fas fa-handshake"></i> Rep Engagement</button>
+        <button class="tab-btn" data-tab="tab-opportunity"><i class="fas fa-crosshairs"></i> Unlabeled
+            Opportunity</button>
+        <button class="tab-btn" data-tab="tab-specialty"><i class="fas fa-stethoscope"></i> Specialty Mix</button>
 
-</nav>
+    </nav>
 
-<!-- ==================== TAB 1: EXECUTIVE SUMMARY ==================== -->
-<div id="tab-overview" class="tab-content active">
-<div class="section-header"><div class="section-icon"><i class="fas fa-chart-pie"></i></div><div><div class="section-title">Executive Summary</div><div class="section-subtitle">Real KPIs from 20,931 HCPs across 86-week longitudinal panel</div></div></div>
+    <!-- ==================== TAB 1: EXECUTIVE SUMMARY ==================== -->
+    <div id="tab-overview" class="tab-content active">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-chart-pie"></i></div>
+            <div>
+                <div class="section-title">Executive Summary</div>
+                <div class="section-subtitle">Real KPIs from 20,931 HCPs across 86-week longitudinal panel</div>
+            </div>
+        </div>
 
-<div class="grid-5">
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Total HCPs</span><div class="kpi-icon" style="background:#f1f5f9;color:#64748b"><i class="fas fa-users"></i></div></div><div class="kpi-value" data-count="20931">0</div><div class="kpi-sub">86-week longitudinal panel</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Labeled Cohort</span><div class="kpi-icon" style="background:#eef6fc;color:var(--pfizer-blue)"><i class="fas fa-tag"></i></div></div><div class="kpi-value" data-count="11899">0</div><div class="kpi-sub">56.9% of total market</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span><div class="kpi-icon" style="background:#f5f3ff;color:var(--seg-unlabeled)"><i class="fas fa-search"></i></div></div><div class="kpi-value" data-count="633">0</div><div class="kpi-sub">Pending classification</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Feature Columns</span><div class="kpi-icon" style="background:#ecfaff;color:var(--pfizer-sky)"><i class="fas fa-database"></i></div></div><div class="kpi-value" data-count="191">0</div><div class="kpi-sub">7 feature blocks engineered</div></div>
-<div class="card kpi-card"><div class="kpi-top"><span class="kpi-label">Deep Learning Recall</span><div class="kpi-icon" style="background:#ecfdf5;color:var(--accent-green)"><i class="fas fa-brain"></i></div></div><div class="kpi-value" data-count="75" data-suffix="%">0</div><div class="kpi-sub">On minority class (SEG_C)</div></div>
-</div>
+        <div class="grid-5">
+            <div class="card kpi-card">
+                <div class="kpi-top"><span class="kpi-label">Total HCPs</span>
+                    <div class="kpi-icon" style="background:#f1f5f9;color:#64748b"><i class="fas fa-users"></i></div>
+                </div>
+                <div class="kpi-value" data-count="20931">0</div>
+                <div class="kpi-sub">86-week longitudinal panel</div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-top"><span class="kpi-label">Labeled Cohort</span>
+                    <div class="kpi-icon" style="background:#eef6fc;color:var(--pfizer-blue)"><i class="fas fa-tag"></i>
+                    </div>
+                </div>
+                <div class="kpi-value" data-count="11899">0</div>
+                <div class="kpi-sub">56.9% of total market</div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-top"><span class="kpi-label">Unlabeled Pool</span>
+                    <div class="kpi-icon" style="background:#f5f3ff;color:var(--seg-unlabeled)"><i
+                            class="fas fa-search"></i></div>
+                </div>
+                <div class="kpi-value" data-count="633">0</div>
+                <div class="kpi-sub">Pending classification</div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-top"><span class="kpi-label">Feature Columns</span>
+                    <div class="kpi-icon" style="background:#ecfaff;color:var(--pfizer-sky)"><i
+                            class="fas fa-database"></i></div>
+                </div>
+                <div class="kpi-value" data-count="191">0</div>
+                <div class="kpi-sub">7 feature blocks engineered</div>
+            </div>
+            <div class="card kpi-card">
+                <div class="kpi-top"><span class="kpi-label">Deep Learning Recall</span>
+                    <div class="kpi-icon" style="background:#ecfdf5;color:var(--accent-green)"><i
+                            class="fas fa-brain"></i></div>
+                </div>
+                <div class="kpi-value" data-count="75" data-suffix="%">0</div>
+                <div class="kpi-sub">On minority class (SEG_C)</div>
+            </div>
+        </div>
 
-<div class="alert-box alert-info" style="margin-top:20px"><i class="fas fa-info-circle"></i><span><strong>Data Source:</strong> All metrics are computed from <code>hcp_analysis_clean.parquet</code> (20,931 HCPs × 191 columns). KPIs reflect real aggregated prescribing, engagement, and market share data across the 86-week observation window.</span></div>
+        <div class="alert-box alert-info" style="margin-top:20px"><i class="fas fa-info-circle"></i><span><strong>Data
+                    Source:</strong> All metrics are computed from <code>hcp_analysis_clean.parquet</code> (20,931 HCPs
+                × 191 columns). KPIs reflect real aggregated prescribing, engagement, and market share data across the
+                86-week observation window.</span></div>
 
-<div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Population Distribution</div><div class="chart-container" style="height:300px"><canvas id="chart-funnel"></canvas></div></div>
-<div class="card"><div class="chart-title">Labeled Target Breakdown</div><div class="chart-container" style="height:300px"><canvas id="chart-doughnut"></canvas></div></div>
-</div>
-<div class="card" style="margin-top:24px"><div class="chart-title">Key Metrics by Segment (Labeled Cohort)</div><div class="chart-container" style="height:340px"><canvas id="chart-heatmap"></canvas></div></div>
-</div>
+        <div class="grid-2" style="margin-top:24px">
+            <div class="card">
+                <div class="chart-title">Population Distribution</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-funnel"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Labeled Target Breakdown</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-doughnut"></canvas></div>
+            </div>
+        </div>
+        <div class="card" style="margin-top:24px">
+            <div class="chart-title">Key Metrics by Segment (Labeled Cohort)</div>
+            <div class="chart-container" style="height:340px"><canvas id="chart-heatmap"></canvas></div>
+        </div>
+    </div>
 
-<!-- ==================== TAB 2: SEGMENT DEEP-DIVE ==================== -->
-<div id="tab-segments" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-layer-group"></i></div><div><div class="section-title">Segment Deep-Dive</div><div class="section-subtitle">Behavioral profiling from actual 191-column feature engineering</div></div></div>
+    <!-- ==================== TAB 2: SEGMENT DEEP-DIVE ==================== -->
+    <div id="tab-segments" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-layer-group"></i></div>
+            <div>
+                <div class="section-title">Segment Deep-Dive</div>
+                <div class="section-subtitle">Behavioral profiling from actual 191-column feature engineering</div>
+            </div>
+        </div>
 
-<div class="grid-3">
-<!-- Seg A -->
-<div class="card segment-card seg-a">
-<div class="segment-name" style="color:var(--seg-a)">Segment A — Traditional</div>
-<div class="segment-desc">Lowest prescribing volume (0.17 UC TRx/wk). Only 3.8% show Pfizer growth. Highest rep effort per Rx (0.94 details/TRx). Status-quo prescribers resistant to new therapies.</div>
-<div class="segment-stats">
-<div class="segment-stat"><span class="segment-stat-label">Population</span><span class="segment-stat-value">6,406 (53.8%)</span></div>
-<div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span class="segment-stat-value">0.171</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span class="segment-stat-value" style="color:var(--accent-coral)">0.36%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span class="segment-stat-value">46.1%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span class="segment-stat-value" style="color:var(--accent-coral)">0.94</span></div>
-<div style="margin-top:8px"><span class="badge badge-amber">Low Priority — Baseline</span></div>
-</div></div>
+        <div class="grid-3">
+            <!-- Seg A -->
+            <div class="card segment-card seg-a">
+                <div class="segment-name" style="color:var(--seg-a)">Segment A — Traditional</div>
+                <div class="segment-desc">Lowest prescribing volume (0.17 UC TRx/wk). Only 3.8% show Pfizer growth.
+                    Highest rep effort per Rx (0.94 details/TRx). Status-quo prescribers resistant to new therapies.
+                </div>
+                <div class="segment-stats">
+                    <div class="segment-stat"><span class="segment-stat-label">Population</span><span
+                            class="segment-stat-value">6,406 (53.8%)</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span
+                            class="segment-stat-value">0.171</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span
+                            class="segment-stat-value" style="color:var(--accent-coral)">0.36%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span
+                            class="segment-stat-value">46.1%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span
+                            class="segment-stat-value" style="color:var(--accent-coral)">0.94</span></div>
+                    <div style="margin-top:8px"><span class="badge badge-amber">Low Priority — Baseline</span></div>
+                </div>
+            </div>
 
-<!-- Seg B -->
-<div class="card segment-card seg-b">
-<div class="segment-name" style="color:var(--seg-b)">Segment B — Relationship</div>
-<div class="segment-desc">Highest Pfizer growth signal (9.6% growing). Most efficient rep conversion (0.44 details/TRx). Broadest promo engagement (2.56 channels). The primary commercial target.</div>
-<div class="segment-stats">
-<div class="segment-stat"><span class="segment-stat-label">Population</span><span class="segment-stat-value">3,349 (28.2%)</span></div>
-<div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span class="segment-stat-value">0.517</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span class="segment-stat-value" style="color:var(--seg-b)">0.48%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span class="segment-stat-value">73.3%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span class="segment-stat-value" style="color:var(--accent-green)">0.44</span></div>
-<div style="margin-top:8px"><span class="badge badge-green">High Priority — Target</span></div>
-</div></div>
+            <!-- Seg B -->
+            <div class="card segment-card seg-b">
+                <div class="segment-name" style="color:var(--seg-b)">Segment B — Relationship</div>
+                <div class="segment-desc">Highest Pfizer growth signal (9.6% growing). Most efficient rep conversion
+                    (0.44 details/TRx). Broadest promo engagement (2.56 channels). The primary commercial target.</div>
+                <div class="segment-stats">
+                    <div class="segment-stat"><span class="segment-stat-label">Population</span><span
+                            class="segment-stat-value">3,349 (28.2%)</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span
+                            class="segment-stat-value">0.517</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span
+                            class="segment-stat-value" style="color:var(--seg-b)">0.48%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span
+                            class="segment-stat-value">73.3%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span
+                            class="segment-stat-value" style="color:var(--accent-green)">0.44</span></div>
+                    <div style="margin-top:8px"><span class="badge badge-green">High Priority — Target</span></div>
+                </div>
+            </div>
 
-<!-- Seg C -->
-<div class="card segment-card seg-c">
-<div class="segment-name" style="color:var(--seg-c)">Segment C — Didactic</div>
-<div class="segment-desc">Highest UC volume (0.71 TRx/wk) and strongest biologic loyalty (11.3% IL-23 share). Most efficient rep relationship (0.38 details/TRx). Protocol-driven, evidence-based HCPs.</div>
-<div class="segment-stats">
-<div class="segment-stat"><span class="segment-stat-label">Population</span><span class="segment-stat-value">2,144 (18.0%)</span></div>
-<div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span class="segment-stat-value">0.711</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span class="segment-stat-value" style="color:var(--seg-c)">0.31%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span class="segment-stat-value">76.8%</span></div>
-<div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span class="segment-stat-value" style="color:var(--accent-green)">0.38</span></div>
-<div style="margin-top:8px"><span class="badge badge-sky">Upsell Target — Deep Learning Focus</span></div>
-</div></div>
-</div>
+            <!-- Seg C -->
+            <div class="card segment-card seg-c">
+                <div class="segment-name" style="color:var(--seg-c)">Segment C — Didactic</div>
+                <div class="segment-desc">Highest UC volume (0.71 TRx/wk) and strongest biologic loyalty (11.3% IL-23
+                    share). Most efficient rep relationship (0.38 details/TRx). Protocol-driven, evidence-based HCPs.
+                </div>
+                <div class="segment-stats">
+                    <div class="segment-stat"><span class="segment-stat-label">Population</span><span
+                            class="segment-stat-value">2,144 (18.0%)</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">UC TRx/week</span><span
+                            class="segment-stat-value">0.711</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Pfizer Share of UC</span><span
+                            class="segment-stat-value" style="color:var(--seg-c)">0.31%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Active Weeks</span><span
+                            class="segment-stat-value">76.8%</span></div>
+                    <div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span
+                            class="segment-stat-value" style="color:var(--accent-green)">0.38</span></div>
+                    <div style="margin-top:8px"><span class="badge badge-sky">Upsell Target — Deep Learning Focus</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">UC TRx Volume by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-segment-bars"></canvas></div></div>
-<div class="card"><div class="chart-title">Medication Mix by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-med-mix"></canvas></div></div>
-</div>
+        <div class="grid-2" style="margin-top:24px">
+            <div class="card">
+                <div class="chart-title">UC TRx Volume by Segment</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-segment-bars"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Medication Mix by Segment</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-med-mix"></canvas></div>
+            </div>
+        </div>
 
-<!-- HCP 86-Week Timelines (restored from V1) -->
-<div class="section-header" style="margin-top:32px"><div class="section-icon"><i class="fas fa-chart-line"></i></div><div><div class="section-title">HCP Longitudinal Journeys</div><div class="section-subtitle">Visualizing the 86-week sequential data fed into the tensors</div></div></div>
-<div class="sub-tabs">
-<button class="sub-tab active" data-subtab="sub-pb">Dr. James Chen (SEG_B)</button>
-<button class="sub-tab" data-subtab="sub-pc">Dr. Sarah Williams (SEG_C)</button>
-<button class="sub-tab" data-subtab="sub-pa">Dr. Maria Lopez (SEG_A)</button>
-</div>
-<!-- Dr. Chen (SEG_B) -->
-<div id="sub-pb" class="sub-panel active">
-<div class="card persona-card">
-<div class="persona-header"><div class="persona-avatar" style="background:var(--pfizer-light)">JC</div><div><div class="persona-name">Dr. James Chen</div><div class="persona-role">San Francisco, CA — Relationship-Centric</div><div class="persona-seg" style="color:var(--pfizer-light)">Segment B</div></div></div>
-<div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
-<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">14.2</div></div>
-<div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">High</div></div>
-</div>
-<div class="chart-container" style="height:320px"><canvas id="chart-pb-main"></canvas></div>
-</div></div>
-<!-- Dr. Williams (SEG_C) -->
-<div id="sub-pc" class="sub-panel">
-<div class="card persona-card">
-<div class="persona-header"><div class="persona-avatar" style="background:var(--pfizer-deep)">SW</div><div><div class="persona-name">Dr. Sarah Williams</div><div class="persona-role">Chicago, IL — Didactic / Cautious</div><div class="persona-seg" style="color:var(--pfizer-deep)">Segment C</div></div></div>
-<div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
-<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">6.8</div></div>
-<div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">Moderate</div></div>
-</div>
-<div class="chart-container" style="height:320px"><canvas id="chart-pc-main"></canvas></div>
-</div></div>
-<!-- Dr. Lopez (SEG_A) -->
-<div id="sub-pa" class="sub-panel">
-<div class="card persona-card">
-<div class="persona-header"><div class="persona-avatar" style="background:var(--pfizer-blue)">ML</div><div><div class="persona-name">Dr. Maria Lopez</div><div class="persona-role">Houston, TX — Traditional Prescriber</div><div class="persona-seg" style="color:var(--pfizer-blue)">Segment A</div></div></div>
-<div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
-<div class="persona-metric"><div class="persona-metric-label">Avg Weekly TRx Volume</div><div class="persona-metric-value">12.0</div></div>
-<div class="persona-metric"><div class="persona-metric-label">86-Week Interactions</div><div class="persona-metric-value">Low</div></div>
-</div>
-<div class="chart-container" style="height:320px"><canvas id="chart-pa-main"></canvas></div>
-</div></div>
-</div>
+        <!-- HCP 86-Week Timelines (restored from V1) -->
+        <div class="section-header" style="margin-top:32px">
+            <div class="section-icon"><i class="fas fa-chart-line"></i></div>
+            <div>
+                <div class="section-title">HCP Longitudinal Journeys</div>
+                <div class="section-subtitle">Visualizing the 86-week sequential data fed into the tensors</div>
+            </div>
+        </div>
+        <div class="sub-tabs">
+            <button class="sub-tab active" data-subtab="sub-pb">Dr. James Chen (SEG_B)</button>
+            <button class="sub-tab" data-subtab="sub-pc">Dr. Sarah Williams (SEG_C)</button>
+            <button class="sub-tab" data-subtab="sub-pa">Dr. Maria Lopez (SEG_A)</button>
+        </div>
+        <!-- Dr. Chen (SEG_B) -->
+        <div id="sub-pb" class="sub-panel active">
+            <div class="card persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar" style="background:var(--pfizer-light)">JC</div>
+                    <div>
+                        <div class="persona-name">Dr. James Chen</div>
+                        <div class="persona-role">San Francisco, CA — Relationship-Centric</div>
+                        <div class="persona-seg" style="color:var(--pfizer-light)">Segment B</div>
+                    </div>
+                </div>
+                <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
+                        <div class="persona-metric-value">14.2</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">86-Week Interactions</div>
+                        <div class="persona-metric-value">High</div>
+                    </div>
+                </div>
+                <div class="chart-container" style="height:320px"><canvas id="chart-pb-main"></canvas></div>
+            </div>
+        </div>
+        <!-- Dr. Williams (SEG_C) -->
+        <div id="sub-pc" class="sub-panel">
+            <div class="card persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar" style="background:var(--pfizer-deep)">SW</div>
+                    <div>
+                        <div class="persona-name">Dr. Sarah Williams</div>
+                        <div class="persona-role">Chicago, IL — Didactic / Cautious</div>
+                        <div class="persona-seg" style="color:var(--pfizer-deep)">Segment C</div>
+                    </div>
+                </div>
+                <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
+                        <div class="persona-metric-value">6.8</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">86-Week Interactions</div>
+                        <div class="persona-metric-value">Moderate</div>
+                    </div>
+                </div>
+                <div class="chart-container" style="height:320px"><canvas id="chart-pc-main"></canvas></div>
+            </div>
+        </div>
+        <!-- Dr. Lopez (SEG_A) -->
+        <div id="sub-pa" class="sub-panel">
+            <div class="card persona-card">
+                <div class="persona-header">
+                    <div class="persona-avatar" style="background:var(--pfizer-blue)">ML</div>
+                    <div>
+                        <div class="persona-name">Dr. Maria Lopez</div>
+                        <div class="persona-role">Houston, TX — Traditional Prescriber</div>
+                        <div class="persona-seg" style="color:var(--pfizer-blue)">Segment A</div>
+                    </div>
+                </div>
+                <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
+                        <div class="persona-metric-value">12.0</div>
+                    </div>
+                    <div class="persona-metric">
+                        <div class="persona-metric-label">86-Week Interactions</div>
+                        <div class="persona-metric-value">Low</div>
+                    </div>
+                </div>
+                <div class="chart-container" style="height:320px"><canvas id="chart-pa-main"></canvas></div>
+            </div>
+        </div>
+    </div>
 
-<!-- ==================== TAB 3: BRAND ADOPTION ==================== -->
-<div id="tab-adoption" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-rocket"></i></div><div><div class="section-title">Brand1 Adoption & Trajectory</div><div class="section-subtitle">Adoption funnel, growth signals, and recency trends from real data</div></div></div>
+    <!-- ==================== TAB 3: BRAND ADOPTION ==================== -->
+    <div id="tab-adoption" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-rocket"></i></div>
+            <div>
+                <div class="section-title">Brand1 Adoption & Trajectory</div>
+                <div class="section-subtitle">Adoption funnel, growth signals, and recency trends from real data</div>
+            </div>
+        </div>
 
-<div class="grid-3" style="margin-bottom:24px">
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--accent-coral)">91.4%</div><div class="metric-highlight-label">Never Tried Brand1</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--accent-green)">5.0%</div><div class="metric-highlight-label">Currently Active</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--accent-amber)">2.6%</div><div class="metric-highlight-label">Trialed Then Lapsed</div></div>
-</div>
+        <div class="grid-3" style="margin-bottom:24px">
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--accent-coral)">91.4%</div>
+                <div class="metric-highlight-label">Never Tried Brand1</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--accent-green)">5.0%</div>
+                <div class="metric-highlight-label">Currently Active</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--accent-amber)">2.6%</div>
+                <div class="metric-highlight-label">Trialed Then Lapsed</div>
+            </div>
+        </div>
 
-<div class="grid-2">
-<div class="card"><div class="chart-title">Adoption Funnel by Segment (% of each segment)</div><div class="chart-container" style="height:300px"><canvas id="chart-adoption-pct"></canvas></div></div>
-<div class="card"><div class="chart-title">Adoption Funnel by Segment (Absolute Count)</div><div class="chart-container" style="height:300px"><canvas id="chart-adoption-abs"></canvas></div></div>
-</div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="chart-title">Adoption Funnel by Segment (% of each segment)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-adoption-pct"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Adoption Funnel by Segment (Absolute Count)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-adoption-abs"></canvas></div>
+            </div>
+        </div>
 
-<div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Growth Signals: Who Is Accelerating?</div><div class="chart-container" style="height:300px"><canvas id="chart-growth-signals"></canvas></div></div>
-<div class="card"><div class="chart-title">Pfizer TRx: 86-Week Average vs. Recent 8 Weeks</div><div class="chart-container" style="height:300px"><canvas id="chart-trend-bars"></canvas></div></div>
-</div>
-</div>
+        <div class="grid-2" style="margin-top:24px">
+            <div class="card">
+                <div class="chart-title">Growth Signals: Who Is Accelerating?</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-growth-signals"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Pfizer TRx: 86-Week Average vs. Recent 8 Weeks</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-trend-bars"></canvas></div>
+            </div>
+        </div>
+    </div>
 
-<!-- ==================== TAB 4: COMPETITIVE INTELLIGENCE ==================== -->
-<div id="tab-competitive" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-chess"></i></div><div><div class="section-title">Competitive Intelligence</div><div class="section-subtitle">Pfizer vs Brand2 market dynamics across segments</div></div></div>
+    <!-- ==================== TAB 4: COMPETITIVE INTELLIGENCE ==================== -->
+    <div id="tab-competitive" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-chess"></i></div>
+            <div>
+                <div class="section-title">Competitive Intelligence</div>
+                <div class="section-subtitle">Pfizer vs Brand2 market dynamics across segments</div>
+            </div>
+        </div>
 
-<div class="grid-3" style="margin-bottom:24px">
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-a)">3.90×</div><div class="metric-highlight-label">Brand2/Pfizer — SEG_A</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-b)">4.43×</div><div class="metric-highlight-label">Brand2/Pfizer — SEG_B</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-c)">4.29×</div><div class="metric-highlight-label">Brand2/Pfizer — SEG_C</div></div>
-</div>
+        <div class="grid-3" style="margin-bottom:24px">
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-a)">3.90×</div>
+                <div class="metric-highlight-label">Brand2/Pfizer — SEG_A</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-b)">4.43×</div>
+                <div class="metric-highlight-label">Brand2/Pfizer — SEG_B</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-c)">4.29×</div>
+                <div class="metric-highlight-label">Brand2/Pfizer — SEG_C</div>
+            </div>
+        </div>
 
-<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Competitive Pressure:</strong> Brand2 outprescribes Pfizer by 3.9–4.4× across all segments. The gap is widest in SEG_B (4.43×), the very segment with the highest Pfizer growth trajectory — indicating an active battleground for share.</span></div>
+        <div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Competitive
+                    Pressure:</strong> Brand2 outprescribes Pfizer by 3.9–4.4× across all segments. The gap is widest in
+                SEG_B (4.43×), the very segment with the highest Pfizer growth trajectory — indicating an active
+                battleground for share.</span></div>
 
-<div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Pfizer vs Brand2: Market Share of UC (%) by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-comp-share"></canvas></div></div>
-<div class="card"><div class="chart-title">Brand2/Pfizer Prescribing Ratio by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-comp-ratio"></canvas></div></div>
-</div>
+        <div class="grid-2" style="margin-top:24px">
+            <div class="card">
+                <div class="chart-title">Pfizer vs Brand2: Market Share of UC (%) by Segment</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-comp-share"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Brand2/Pfizer Prescribing Ratio by Segment</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-comp-ratio"></canvas></div>
+            </div>
+        </div>
 
-<div class="card" style="margin-top:24px"><div class="chart-title">UC TRx Volume vs Pfizer Market Share (Labeled HCPs)</div><div class="chart-container" style="height:420px"><canvas id="chart-scatter-uc"></canvas></div></div>
-</div>
+        <div class="card" style="margin-top:24px">
+            <div class="chart-title">UC TRx Volume vs Pfizer Market Share (Labeled HCPs)</div>
+            <div class="chart-container" style="height:420px"><canvas id="chart-scatter-uc"></canvas></div>
+        </div>
+    </div>
 
-<!-- ==================== TAB 5: REP ENGAGEMENT ==================== -->
-<div id="tab-engagement" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-handshake"></i></div><div><div class="section-title">Rep Engagement ROI</div><div class="section-subtitle">Measuring commercial efficiency: visits, channels, and prescribing impact</div></div></div>
+    <!-- ==================== TAB 5: REP ENGAGEMENT ==================== -->
+    <div id="tab-engagement" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-handshake"></i></div>
+            <div>
+                <div class="section-title">Rep Engagement ROI</div>
+                <div class="section-subtitle">Measuring commercial efficiency: visits, channels, and prescribing impact
+                </div>
+            </div>
+        </div>
 
-<div class="grid-4" style="margin-bottom:24px">
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-a)">0.94</div><div class="metric-highlight-label">Details/Rx — SEG_A</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-b)">0.44</div><div class="metric-highlight-label">Details/Rx — SEG_B</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--seg-c)">0.38</div><div class="metric-highlight-label">Details/Rx — SEG_C</div></div>
-<div class="card metric-highlight"><div class="metric-highlight-value" style="color:var(--accent-green)">2.1×</div><div class="metric-highlight-label">SEG_B is 2.1× more efficient than SEG_A</div></div>
-</div>
+        <div class="grid-4" style="margin-bottom:24px">
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-a)">0.94</div>
+                <div class="metric-highlight-label">Details/Rx — SEG_A</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-b)">0.44</div>
+                <div class="metric-highlight-label">Details/Rx — SEG_B</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--seg-c)">0.38</div>
+                <div class="metric-highlight-label">Details/Rx — SEG_C</div>
+            </div>
+            <div class="card metric-highlight">
+                <div class="metric-highlight-value" style="color:var(--accent-green)">2.1×</div>
+                <div class="metric-highlight-label">SEG_B is 2.1× more efficient than SEG_A</div>
+            </div>
+        </div>
 
-<div class="grid-2">
-<div class="card"><div class="chart-title">Engagement Metrics by Segment</div><div class="chart-container" style="height:300px"><canvas id="chart-engagement"></canvas></div></div>
-<div class="card"><div class="chart-title">Rep Visits vs Pfizer Prescribing (Scatter)</div><div class="chart-container" style="height:300px"><canvas id="chart-scatter-eng"></canvas></div></div>
-</div>
-</div>
+        <div class="grid-2">
+            <div class="card">
+                <div class="chart-title">Engagement Metrics by Segment</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-engagement"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Rep Visits vs Pfizer Prescribing (Scatter)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-scatter-eng"></canvas></div>
+            </div>
+        </div>
+    </div>
 
-<!-- ==================== TAB 6: UNLABELED OPPORTUNITY ==================== -->
-<div id="tab-opportunity" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-crosshairs"></i></div><div><div class="section-title">Unlabeled HCP Opportunity</div><div class="section-subtitle">Prioritizing 633 unclassified HCPs for commercial outreach</div></div></div>
+    <!-- ==================== TAB 6: UNLABELED OPPORTUNITY ==================== -->
+    <div id="tab-opportunity" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-crosshairs"></i></div>
+            <div>
+                <div class="section-title">Unlabeled HCP Opportunity</div>
+                <div class="section-subtitle">Prioritizing 633 unclassified HCPs for commercial outreach</div>
+            </div>
+        </div>
 
-<div class="grid-3" style="margin-bottom:24px">
-<div class="card tier-card tier-1"><div class="tier-value" style="color:var(--accent-green)">43</div><div class="tier-label">Tier 1 — Immediate</div><div class="tier-desc">Score ≥ 0.60. Highest prescribing + growth signals.</div></div>
-<div class="card tier-card tier-2"><div class="tier-value" style="color:var(--accent-amber)">22</div><div class="tier-label">Tier 2 — Validate</div><div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div></div>
-<div class="card tier-card tier-3"><div class="tier-value" style="color:var(--text-muted)">568</div><div class="tier-label">Tier 3 — Monitor</div><div class="tier-desc">Score < 0.35. Low activity, monitor for emergence.</div></div>
-</div>
+        <div class="card" id="inference-card">
+            <div class="chart-title">Live Model Prediction: Segment Classification</div>
+            <div class="chart-container" style="height: auto; padding: 15px 0;">
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 15px;">
+                    Test the live Hugging Face model (SEG_A vs SEG_BC) with sample HCP data.
+                </p>
+                <button id="btn-predict" class="tab-btn active"
+                    style="width: 100%; text-align: center; justify-content: center;">
+                    <i class="fas fa-brain"></i> Run Live Prediction
+                </button>
+                <div id="prediction-result"
+                    style="margin-top: 20px; font-weight: 600; color: var(--pfizer-deep); font-size: 16px; background: var(--bg-active); padding: 10px; border-radius: 8px; display: none;">
+                </div>
+            </div>
+        </div>
 
-<div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales representative.</span></div>
+        <div class="grid-3" style="margin-bottom:24px">
+            <div class="card tier-card tier-1">
+                <div class="tier-value" style="color:var(--accent-green)">43</div>
+                <div class="tier-label">Tier 1 — Immediate</div>
+                <div class="tier-desc">Score ≥ 0.60. Highest prescribing + growth signals.</div>
+            </div>
+            <div class="card tier-card tier-2">
+                <div class="tier-value" style="color:var(--accent-amber)">22</div>
+                <div class="tier-label">Tier 2 — Validate</div>
+                <div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div>
+            </div>
+            <div class="card tier-card tier-3">
+                <div class="tier-value" style="color:var(--text-muted)">568</div>
+                <div class="tier-label">Tier 3 — Monitor</div>
+                <div class="tier-desc">Score < 0.35. Low activity, monitor for emergence.</div>
+                </div>
+            </div>
 
-<div class="grid-2" style="margin-top:24px">
-<div class="card"><div class="chart-title">Opportunity Score Distribution (633 Unlabeled HCPs)</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div></div>
-<div class="card"><div class="chart-title">Click a red point to identify the HCP below ↓</div><div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div></div>
-</div>
+            <div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage
+                        Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among Tier 1
+                    (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales
+                    representative.</span></div>
 
-<!-- HCP Detail Panel (populated on click) -->
-<div id="hcp-detail-panel" class="card" style="margin-top:24px;display:none;border-left:4px solid var(--accent-coral)">
-<div class="section-header" style="margin-bottom:16px"><div class="section-icon" style="background:#fef2f2;color:var(--accent-coral)"><i class="fas fa-user-md"></i></div><div><div class="section-title" id="hcp-detail-title">HCP Selected</div><div class="section-subtitle">Zero rep visits — high opportunity for outreach</div></div></div>
-<div class="grid-5" id="hcp-detail-grid"></div>
-<div class="alert-box alert-warning" style="margin-top:16px"><i class="fas fa-bullhorn"></i><span><strong>Action Required:</strong> This HCP has never been visited by a sales representative yet shows significant UC prescribing activity. Recommend scheduling an initial detail call.</span></div>
-</div>
-</div>
+            <div class="grid-2" style="margin-top:24px">
+                <div class="card">
+                    <div class="chart-title">Opportunity Score Distribution (633 Unlabeled HCPs)</div>
+                    <div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="chart-title">Click a red point to identify the HCP below ↓</div>
+                    <div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div>
+                </div>
+            </div>
 
-<!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
-<div id="tab-specialty" class="tab-content">
-<div class="section-header"><div class="section-icon"><i class="fas fa-stethoscope"></i></div><div><div class="section-title">Specialty & Demographics</div><div class="section-subtitle">HCP specialty distribution across segments</div></div></div>
+            <!-- HCP Detail Panel (populated on click) -->
+            <div id="hcp-detail-panel" class="card"
+                style="margin-top:24px;display:none;border-left:4px solid var(--accent-coral)">
+                <div class="section-header" style="margin-bottom:16px">
+                    <div class="section-icon" style="background:#fef2f2;color:var(--accent-coral)"><i
+                            class="fas fa-user-md"></i></div>
+                    <div>
+                        <div class="section-title" id="hcp-detail-title">HCP Selected</div>
+                        <div class="section-subtitle">Zero rep visits — high opportunity for outreach</div>
+                    </div>
+                </div>
+                <div class="grid-5" id="hcp-detail-grid"></div>
+                <div class="alert-box alert-warning" style="margin-top:16px"><i
+                        class="fas fa-bullhorn"></i><span><strong>Action Required:</strong> This HCP has never been
+                        visited by a sales representative yet shows significant UC prescribing activity. Recommend
+                        scheduling an initial detail call.</span></div>
+            </div>
+        </div>
 
-<div class="grid-2">
-<div class="card"><div class="chart-title">HCPs by Specialty and Segment (Stacked)</div><div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div></div>
-<div class="card"><div class="chart-title">Specialty Composition (% within each specialty)</div><div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div></div>
-</div>
-</div>
+        <!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
+        <div id="tab-specialty" class="tab-content">
+            <div class="section-header">
+                <div class="section-icon"><i class="fas fa-stethoscope"></i></div>
+                <div>
+                    <div class="section-title">Specialty & Demographics</div>
+                    <div class="section-subtitle">HCP specialty distribution across segments</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="chart-title">HCPs by Specialty and Segment (Stacked)</div>
+                    <div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div>
+                </div>
+                <div class="card">
+                    <div class="chart-title">Specialty Composition (% within each specialty)</div>
+                    <div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div>
+                </div>
+            </div>
+        </div>
 
 
 
-<script src="app.js"></script>
+        <script src="app.js"></script>
 </body>
+
 </html>
