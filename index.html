@@ -469,8 +469,9 @@
                     <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 25px;">
                         Test the live Hugging Face model (SEG_A vs SEG_BC) with sample HCP data.
                     </p>
-                    <button id="btn-predict" class="tab-btn active"
-                        style="width: 100%; justify-content: center; border-radius: 8px; padding: 12px;">
+                    <button id="btn-predict"
+                        style="width: 100%; justify-content: center; border-radius: 8px; padding: 12px; background: var(--pfizer-blue); color: white; border: none; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: opacity 0.2s;"
+                        onmouseover="this.style.opacity=0.9" onmouseout="this.style.opacity=1">
                         <i class="fas fa-brain"></i> Run Live Prediction
                     </button>
                     <div id="prediction-result"
