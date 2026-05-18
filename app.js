@@ -187,75 +187,81 @@ function buildSpecialtyPct() {
 }
 
 /* ============================================================
-   HUGGING FACE INFERENCE API INTEGRATION
-   Model: pfizer-project-team/binary-segA-vs-segBC
+   CLIENT-SIDE INFERENCE ENGINE (PYODIDE)
+   Model: scikit-learn model loaded directly in browser
    ============================================================ */
 
-const HF_API_URL = "https://api-inference.huggingface.co/models/pfizer-project-team/binary-segA-vs-segBC";
-// Note: If your model is private, you need a token. If it's public, you might not need it, 
-// but it is highly recommended to avoid rate limits.
-const HF_TOKEN = "YOUR_HF_ACCESS_TOKEN";
+let pyodideInstance = null;
 
 async function runModelPrediction() {
   const resultDiv = document.getElementById('prediction-result');
   const predictBtn = document.getElementById('btn-predict');
 
-  // UI Loading state
-  resultDiv.style.display = 'block';
-  resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running inference on Hugging Face...';
+  // Handle UI state for loading (disable button and show spinner)
   predictBtn.disabled = true;
-  predictBtn.style.opacity = '0.5';
-
-  // Construct the payload.
-  // IMPORTANT: Modify the keys and array lengths to match the exact input features your model expects.
-  const payload = {
-    "inputs": {
-      "DETAILS__std": [2.5],
-      "COPAY__mean": [15.0],
-      "ORAL_NRX__slope": [0.001],
-      "UC_TRX__max": [12.0]
-    }
-  };
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing Pyodide & loading model (may take a moment)...';
 
   try {
-    const response = await fetch(HF_API_URL, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${HF_TOKEN}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP Status: ${response.status}`);
+    // Initialize Pyodide
+    if (!pyodideInstance) {
+      pyodideInstance = await loadPyodide();
+      // Load the scikit-learn and numpy packages into the browser memory
+      await pyodideInstance.loadPackage(['scikit-learn', 'numpy']);
     }
 
-    const data = await response.json();
+    resultDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading model and running inference...';
 
-    // Format the output dynamically
-    // Scikit-learn / XGBoost models typically return an array of predictions
-    const predictionValue = Array.isArray(data) ? data[0] : JSON.stringify(data);
+    // Use Python code (executed via JavaScript) to download the model directly from this URL
+    const pythonCode = `
+import urllib.request
+import numpy as np
+import joblib
 
-    resultDiv.innerHTML = `<i class="fas fa-check-circle" style="color: var(--accent-green);"></i> Model Output: <b>${predictionValue}</b>`;
+url = "https://huggingface.co/pfizer-project-team/binary-segA-vs-segBC/resolve/main/sklearn_model.joblib"
+# Download the model directly from the URL
+urllib.request.urlretrieve(url, "sklearn_model.joblib")
+
+# Load the scikit-learn model
+model = joblib.load("sklearn_model.joblib")
+
+# The model expects a flattened tensor of exactly 5590 features (86 weeks * 65 features)
+# Create a dummy numpy array of shape (1, 5590) of zeros for the prediction
+dummy_features = np.zeros((1, 5590))
+
+# Run the prediction using model.predict()
+prediction = model.predict(dummy_features)
+int(prediction[0])
+`;
+
+    // Execute python code and wait for result
+    const result = await pyodideInstance.runPythonAsync(pythonCode);
+
+    // Return the result to JS and update UI
+    if (result === 1) {
+      resultDiv.innerHTML = '<i class="fas fa-check-circle" style="color: var(--accent-green);"></i> SEG_B/C (High Potential)';
+    } else {
+      resultDiv.innerHTML = '<i class="fas fa-circle" style="color: var(--text-muted);"></i> SEG_A (Traditionalist)';
+    }
 
   } catch (error) {
-    console.error("HF Inference API Error:", error);
-    resultDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--accent-coral);"></i> Error running model. Please check the console.`;
+    console.error("Pyodide Client-Side ML Error:", error);
+    resultDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--accent-coral);"></i> Inference Error: ${error.message}`;
   } finally {
-    // Reset button state
+    // Re-enable the button
     predictBtn.disabled = false;
-    predictBtn.style.opacity = '1';
   }
 }
 
-// Attach the event listener once the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
+/* Init */
+document.addEventListener('DOMContentLoaded', () => { 
+  initTabs(); 
+  loadTab('tab-overview'); 
+  animateCounters(); 
+  
+  // Bind live prediction button
   const predictBtn = document.getElementById('btn-predict');
   if (predictBtn) {
     predictBtn.addEventListener('click', runModelPrediction);
   }
 });
-
-/* Init */
-document.addEventListener('DOMContentLoaded', () => { initTabs(); loadTab('tab-overview'); animateCounters(); });

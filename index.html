@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 </head>
 
 <body>
@@ -424,6 +425,7 @@
 
     <!-- ==================== TAB 6: UNLABELED OPPORTUNITY ==================== -->
     <div id="tab-opportunity" class="tab-content">
+
         <div class="section-header">
             <div class="section-icon"><i class="fas fa-crosshairs"></i></div>
             <div>
@@ -432,100 +434,110 @@
             </div>
         </div>
 
-        <div class="card" id="inference-card">
-            <div class="chart-title">Live Model Prediction: Segment Classification</div>
-            <div class="chart-container" style="height: auto; padding: 15px 0;">
-                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 15px;">
-                    Test the live Hugging Face model (SEG_A vs SEG_BC) with sample HCP data.
-                </p>
-                <button id="btn-predict" class="tab-btn active"
-                    style="width: 100%; text-align: center; justify-content: center;">
-                    <i class="fas fa-brain"></i> Run Live Prediction
-                </button>
-                <div id="prediction-result"
-                    style="margin-top: 20px; font-weight: 600; color: var(--pfizer-deep); font-size: 16px; background: var(--bg-active); padding: 10px; border-radius: 8px; display: none;">
-                </div>
-            </div>
-        </div>
+        <div class="grid-2" style="align-items: start; margin-bottom: 24px;">
 
-        <div class="grid-3" style="margin-bottom:24px">
-            <div class="card tier-card tier-1">
-                <div class="tier-value" style="color:var(--accent-green)">43</div>
-                <div class="tier-label">Tier 1 — Immediate</div>
-                <div class="tier-desc">Score ≥ 0.60. Highest prescribing + growth signals.</div>
-            </div>
-            <div class="card tier-card tier-2">
-                <div class="tier-value" style="color:var(--accent-amber)">22</div>
-                <div class="tier-label">Tier 2 — Validate</div>
-                <div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div>
-            </div>
-            <div class="card tier-card tier-3">
-                <div class="tier-value" style="color:var(--text-muted)">568</div>
-                <div class="tier-label">Tier 3 — Monitor</div>
-                <div class="tier-desc">Score < 0.35. Low activity, monitor for emergence.</div>
-                </div>
-            </div>
-
-            <div class="alert-box alert-warning"><i class="fas fa-exclamation-triangle"></i><span><strong>Coverage
-                        Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among Tier 1
-                    (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales
-                    representative.</span></div>
-
-            <div class="grid-2" style="margin-top:24px">
-                <div class="card">
-                    <div class="chart-title">Opportunity Score Distribution (633 Unlabeled HCPs)</div>
-                    <div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div>
-                </div>
-                <div class="card">
-                    <div class="chart-title">Click a red point to identify the HCP below ↓</div>
-                    <div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div>
-                </div>
-            </div>
-
-            <!-- HCP Detail Panel (populated on click) -->
-            <div id="hcp-detail-panel" class="card"
-                style="margin-top:24px;display:none;border-left:4px solid var(--accent-coral)">
-                <div class="section-header" style="margin-bottom:16px">
-                    <div class="section-icon" style="background:#fef2f2;color:var(--accent-coral)"><i
-                            class="fas fa-user-md"></i></div>
-                    <div>
-                        <div class="section-title" id="hcp-detail-title">HCP Selected</div>
-                        <div class="section-subtitle">Zero rep visits — high opportunity for outreach</div>
+            <div>
+                <div class="grid-3" style="margin-bottom: 24px;">
+                    <div class="card tier-card tier-1">
+                        <div class="tier-value" style="color:var(--accent-green)">43</div>
+                        <div class="tier-label">Tier 1 — Immediate</div>
+                        <div class="tier-desc">Score &ge; 0.60. Highest prescribing + growth signals.</div>
+                    </div>
+                    <div class="card tier-card tier-2">
+                        <div class="tier-value" style="color:var(--accent-amber)">22</div>
+                        <div class="tier-label">Tier 2 — Validate</div>
+                        <div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div>
+                    </div>
+                    <div class="card tier-card tier-3">
+                        <div class="tier-value" style="color:var(--text-muted)">568</div>
+                        <div class="tier-label">Tier 3 — Monitor</div>
+                        <div class="tier-desc">Score &lt; 0.35. Low activity, monitor for emergence.</div>
                     </div>
                 </div>
-                <div class="grid-5" id="hcp-detail-grid"></div>
-                <div class="alert-box alert-warning" style="margin-top:16px"><i
-                        class="fas fa-bullhorn"></i><span><strong>Action Required:</strong> This HCP has never been
-                        visited by a sales representative yet shows significant UC prescribing activity. Recommend
-                        scheduling an initial detail call.</span></div>
+
+                <div class="alert-box alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span><strong>Coverage Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among
+                        Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales
+                        representative.</span>
+                </div>
+            </div>
+
+            <div class="card" id="inference-card" style="height: 100%;">
+                <div class="chart-title">Live Model Prediction: Segment Classification</div>
+                <div class="chart-container" style="height: auto; padding: 15px 0;">
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 25px;">
+                        Test the live Hugging Face model (SEG_A vs SEG_BC) with sample HCP data.
+                    </p>
+                    <button id="btn-predict" class="tab-btn active"
+                        style="width: 100%; justify-content: center; border-radius: 8px; padding: 12px;">
+                        <i class="fas fa-brain"></i> Run Live Prediction
+                    </button>
+                    <div id="prediction-result"
+                        style="margin-top: 20px; font-weight: 600; color: var(--pfizer-deep); font-size: 16px; background: var(--bg-active); padding: 12px; border-radius: 8px; display: none;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="grid-2" style="margin-top:24px">
+            <div class="card">
+                <div class="chart-title">Opportunity Score Distribution (633 Unlabeled HCPs)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-opp-hist"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Click a red point to identify the HCP below ↓</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-opp-scatter"></canvas></div>
             </div>
         </div>
 
-        <!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
-        <div id="tab-specialty" class="tab-content">
-            <div class="section-header">
-                <div class="section-icon"><i class="fas fa-stethoscope"></i></div>
+        <div id="hcp-detail-panel" class="card"
+            style="margin-top:24px;display:none;border-left:4px solid var(--accent-coral)">
+            <div class="section-header" style="margin-bottom:16px">
+                <div class="section-icon" style="background:#fef2f2;color:var(--accent-coral)">
+                    <i class="fas fa-user-md"></i>
+                </div>
                 <div>
-                    <div class="section-title">Specialty & Demographics</div>
-                    <div class="section-subtitle">HCP specialty distribution across segments</div>
+                    <div class="section-title" id="hcp-detail-title">HCP Selected</div>
+                    <div class="section-subtitle">Zero rep visits — high opportunity for outreach</div>
                 </div>
             </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <div class="chart-title">HCPs by Specialty and Segment (Stacked)</div>
-                    <div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div>
-                </div>
-                <div class="card">
-                    <div class="chart-title">Specialty Composition (% within each specialty)</div>
-                    <div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div>
-                </div>
+            <div class="grid-5" id="hcp-detail-grid"></div>
+            <div class="alert-box alert-warning" style="margin-top:16px">
+                <i class="fas fa-bullhorn"></i>
+                <span><strong>Action Required:</strong> This HCP has never been visited by a sales representative yet
+                    shows significant UC prescribing activity. Recommend scheduling an initial detail call.</span>
             </div>
         </div>
 
+    </div> ```
 
 
-        <script src="app.js"></script>
+    <!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
+    <div id="tab-specialty" class="tab-content">
+        <div class="section-header">
+            <div class="section-icon"><i class="fas fa-stethoscope"></i></div>
+            <div>
+                <div class="section-title">Specialty & Demographics</div>
+                <div class="section-subtitle">HCP specialty distribution across segments</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="chart-title">HCPs by Specialty and Segment (Stacked)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">Specialty Composition (% within each specialty)</div>
+                <div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="app.js"></script>
 </body>
 
 </html>
