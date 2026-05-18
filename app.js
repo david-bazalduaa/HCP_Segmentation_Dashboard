@@ -216,6 +216,9 @@ async function runModelPrediction() {
 import pyodide.http
 import numpy as np
 import joblib
+import sklearn
+
+print(f"[diag] sklearn={sklearn.__version__}  numpy={np.__version__}  joblib={joblib.__version__}")
 
 # Load the model from the same origin (no HF auth, no CORS, no gated-repo issues).
 # This is the same artifact as best_binary_segA_vs_segBC.joblib on Hugging Face.
