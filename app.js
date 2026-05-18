@@ -214,13 +214,16 @@ async function runModelPrediction() {
 
     // Use Python code (executed via JavaScript) to download the model directly from this URL
     const pythonCode = `
-import urllib.request
+import pyodide.http
 import numpy as np
 import joblib
 
 url = "https://huggingface.co/pfizer-project-team/binary-segA-vs-segBC/resolve/main/sklearn_model.joblib"
-# Download the model directly from the URL
-urllib.request.urlretrieve(url, "sklearn_model.joblib")
+
+# In Pyodide, we must use pyfetch to make HTTPS requests
+response = await pyodide.http.pyfetch(url)
+with open("sklearn_model.joblib", "wb") as f:
+    f.write(await response.bytes())
 
 # Load the scikit-learn model
 model = joblib.load("sklearn_model.joblib")
