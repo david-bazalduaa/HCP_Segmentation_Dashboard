@@ -4,7 +4,7 @@ import json
 def generate_json():
     # Load data
     try:
-        df_prop = pd.read_parquet('hcp_propensity_results_catboost.parquet')
+        df_prop = pd.read_parquet('propensity_predictions_with_reasons.parquet')
         df_hcp = pd.read_parquet('hcp_analysis_clean.parquet')
     except Exception as e:
         print(f"Error loading parquet files: {e}")
