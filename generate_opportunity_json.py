@@ -32,7 +32,7 @@ def generate_json():
     for _, row in df_merged.iterrows():
         # Using .get() with defaults in case of missing data to prevent errors
         record = {
-            "id": str(int(row['NUEVO_ID'])),
+            "id": str(row['NUEVO_ID']),
             "uc": round(float(row.get('UC_TRX_mean', 0.0) if pd.notna(row.get('UC_TRX_mean')) else 0.0), 4),
             "sc": round(float(row.get('propensity_score', 0.0) if pd.notna(row.get('propensity_score')) else 0.0), 4),
             "sp": str(row.get('SPECIALTY', 'Unknown')),

@@ -102,7 +102,6 @@ function buildScatterEng() {
   new Chart(ctx, { type: 'scatter', data: { datasets: [{ label: 'SEG_A', data: mk(400, 5.28, 0.0005), backgroundColor: CA + '66', pointRadius: 3 }, { label: 'SEG_B', data: mk(300, 8.94, 0.0018), backgroundColor: CB + '66', pointRadius: 3 }, { label: 'SEG_C', data: mk(200, 8.71, 0.0017), backgroundColor: CC + '66', pointRadius: 3 }] }, options: { maintainAspectRatio: false, responsive: true, plugins: { legend: { position: 'bottom' } }, scales: { x: { title: { display: true, text: 'Total Rep Visits (86 wks)' }, grid: { color: '#f1f5f9' } }, y: { title: { display: true, text: 'Pfizer TRx / week' }, grid: { color: '#f1f5f9' } } } } });
 }
 
-/* ==================== TAB 6: OPPORTUNITY ==================== */
 function buildOpportunityCharts() {
   fetch('opportunity_data.json').then(r => r.json()).then(data => {
     // Add a tiny random jitter to the y-axis (Score) so overlapping points are visible
@@ -110,6 +109,119 @@ function buildOpportunityCharts() {
     const jitter = () => (Math.random() - 0.5) * 0.04;
     const nv = data.noVisits.map(h => ({ x: h.uc, y: Math.max(0, h.sc + jitter()), ...h }));
     const cv = data.covered.map(h => ({ x: h.uc, y: Math.max(0, h.sc + jitter()), ...h }));
+
+    // Dynamic Tier Counts Calculation based on real JSON data
+    const all = [...data.noVisits, ...data.covered];
+    const t1List = all.filter(h => h.sc >= 0.60);
+    const t2List = all.filter(h => h.sc >= 0.35 && h.sc < 0.60);
+    const t3List = all.filter(h => h.sc < 0.35);
+
+    document.getElementById('tier-val-1').textContent = t1List.length;
+    document.getElementById('tier-val-2').textContent = t2List.length;
+    document.getElementById('tier-val-3').textContent = t3List.length;
+
+    // Update Coverage Gap statistics dynamically
+    const totalCount = all.length;
+    const noVisitsCount = data.noVisits.length;
+    const coveredCount = data.covered.length;
+    const pctNoVisits = ((noVisitsCount / totalCount) * 100).toFixed(1);
+
+    document.getElementById('cov-gap-text').innerHTML = `<strong>${noVisitsCount} of ${totalCount} unlabeled HCPs (${pctNoVisits}%)</strong>`;
+    document.getElementById('count-novisits').textContent = noVisitsCount;
+    document.getElementById('count-covered').textContent = coveredCount;
+
+    // Dynamic Cohort Table population
+    const showCohortTable = (title, subtitle, list, themeColor, isNoVisitsCohort) => {
+      const panel = document.getElementById('cohort-table-panel');
+      const tableTitle = document.getElementById('cohort-table-title');
+      const tableSubtitle = document.getElementById('cohort-table-subtitle');
+      const tableIcon = document.getElementById('cohort-table-icon');
+      const tableBody = document.getElementById('cohort-table-body');
+
+      tableTitle.textContent = title;
+      tableSubtitle.textContent = subtitle;
+      tableIcon.style.color = themeColor;
+      tableIcon.style.background = themeColor + '15';
+
+      tableBody.innerHTML = list.map(h => {
+        const repStatus = isNoVisitsCohort ?
+          `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Zero Visits</span>` :
+          (data.covered.some(c => c.id === h.id) ?
+            `<span class="badge badge-green"><i class="fas fa-check-circle"></i> Rep Covered</span>` :
+            `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Zero Visits</span>`);
+
+        return `<tr style="cursor:pointer;" onclick="window.selectHcpFromTable('${h.id}', ${h.uc}, ${h.sc}, '${h.sp}', ${h.ap}, ${data.covered.some(c => c.id === h.id)})">
+          <td style="font-weight:600; color:var(--pfizer-blue);">${h.id}</td>
+          <td>${h.sp}</td>
+          <td style="font-weight:600;">${h.uc.toFixed(4)}</td>
+          <td style="font-weight:600; color:${h.sc >= 0.6 ? 'var(--accent-green)' : h.sc >= 0.35 ? 'var(--accent-amber)' : 'var(--text-secondary)'}">${h.sc.toFixed(4)}</td>
+          <td>${h.ap}%</td>
+          <td>${repStatus}</td>
+        </tr>`;
+      }).join('');
+
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    // Close Table Handler
+    document.getElementById('btn-close-cohort-table').onclick = () => {
+      document.getElementById('cohort-table-panel').style.display = 'none';
+    };
+
+    // Global selector callback for table rows
+    window.selectHcpFromTable = (id, uc, sc, sp, ap, isCovered) => {
+      const panel = document.getElementById('hcp-detail-panel');
+      document.getElementById('hcp-detail-title').textContent = 'NUEVO_ID: ' + id;
+      
+      const badgeHtml = isCovered ?
+        `<span class="badge badge-green" style="font-size: 14px;"><i class="fas fa-check-circle"></i> Representative Contacted</span>` :
+        `<span class="badge badge-red" style="font-size: 14px;"><i class="fas fa-times-circle"></i> Zero Representative Visits</span>`;
+
+      document.getElementById('hcp-detail-grid').innerHTML =
+        `<div class="card kpi-card"><div class="kpi-label">HCP ID</div><div class="kpi-value" style="font-size:22px;color:var(--pfizer-blue)">${id}</div></div>` +
+        `<div class="card kpi-card"><div class="kpi-label">Specialty</div><div class="kpi-value" style="font-size:16px">${sp}</div></div>` +
+        `<div class="card kpi-card"><div class="kpi-label">UC TRx / Week</div><div class="kpi-value" style="font-size:22px">${uc.toFixed(4)}</div></div>` +
+        `<div class="card kpi-card"><div class="kpi-label">Opportunity Score</div><div class="kpi-value" style="font-size:22px;color:${sc >= 0.6 ? 'var(--accent-green)' : 'var(--accent-amber)'}">${sc.toFixed(4)}</div></div>` +
+        `<div class="card kpi-card"><div class="kpi-label">Active Weeks</div><div class="kpi-value" style="font-size:22px">${ap}%</div></div>`;
+      
+      panel.style.borderLeft = isCovered ? '4px solid var(--accent-green)' : '4px solid var(--accent-coral)';
+      const indicator = panel.querySelector('.section-icon');
+      indicator.style.color = isCovered ? 'var(--accent-green)' : 'var(--accent-coral)';
+      indicator.style.background = isCovered ? '#ecfdf5' : '#fef2f2';
+      
+      const actionText = isCovered ?
+        `<span><strong>Interaction Status:</strong> This HCP is actively visited by sales representatives and shows solid market presence. Maintain standard relationship monitoring.</span>` :
+        `<span><strong>Action Required:</strong> This high-potential HCP has zero recorded rep visits but shows active UC prescribing. Recommend scheduling immediate outreach.</span>`;
+      
+      panel.querySelector('.alert-box').className = isCovered ? 'alert-box alert-success' : 'alert-box alert-warning';
+      panel.querySelector('.alert-box span').innerHTML = actionText;
+      panel.querySelector('.section-subtitle').innerHTML = badgeHtml;
+
+      panel.style.display = 'block';
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    // Attach Tier Cards Click Handlers
+    document.getElementById('tier-card-1').onclick = () => {
+      showCohortTable('Tier 1 — Immediate Priorities', `Found ${t1List.length} high priority HCPs with opportunity score ≥ 0.60`, t1List, 'var(--accent-green)', false);
+    };
+    document.getElementById('tier-card-2').onclick = () => {
+      showCohortTable('Tier 2 — Needs Validation', `Found ${t2List.length} moderate opportunity HCPs with score 0.35–0.60`, t2List, 'var(--accent-amber)', false);
+    };
+    document.getElementById('tier-card-3').onclick = () => {
+      showCohortTable('Tier 3 — Monitor for Emergence', `Found ${t3List.length} baseline HCPs with score < 0.35`, t3List, 'var(--text-muted)', false);
+    };
+
+    // Attach Coverage Buttons Click Handlers
+    document.getElementById('btn-show-novisits').onclick = (e) => {
+      e.preventDefault();
+      showCohortTable('Coverage Gap: Zero Rep Visits', `Found ${noVisitsCount} HCPs with zero representative engagement`, data.noVisits, 'var(--accent-coral)', true);
+    };
+    document.getElementById('btn-show-covered').onclick = (e) => {
+      e.preventDefault();
+      showCohortTable('Covered: Representative Engaged', `Found ${coveredCount} HCPs with recorded representative contact`, data.covered, 'var(--pfizer-blue)', false);
+    };
 
     // Histogram
     const all = [...data.noVisits, ...data.covered];
@@ -145,7 +257,7 @@ function buildOpportunityCharts() {
         plugins: {
           legend: { position: 'bottom' }, tooltip: {
             callbacks: {
-              title: pts => { const p = pts[0]; return p.datasetIndex === 0 ? 'ID: ' + p.raw.id : 'Covered HCP'; },
+              title: pts => { const p = pts[0]; return p.dataset.label + ' ID: ' + p.raw.id; },
               label: p => [`UC TRx: ${p.raw.uc.toFixed(4)}/wk`, `Score: ${p.raw.sc.toFixed(4)}`, p.raw.sp ? `Specialty: ${p.raw.sp}` : '']
             }
           }
@@ -154,18 +266,9 @@ function buildOpportunityCharts() {
         onClick: (evt, els) => {
           if (!els.length) return;
           const el = els[0], di = el.datasetIndex, idx = el.index;
-          if (di !== 0) return;
-          const hcp = chart.data.datasets[0].data[idx];
-          const panel = document.getElementById('hcp-detail-panel');
-          document.getElementById('hcp-detail-title').textContent = 'NUEVO_ID: ' + hcp.id;
-          document.getElementById('hcp-detail-grid').innerHTML =
-            `<div class="card kpi-card"><div class="kpi-label">HCP ID</div><div class="kpi-value" style="font-size:22px;color:${RED}">${hcp.id}</div></div>` +
-            `<div class="card kpi-card"><div class="kpi-label">Specialty</div><div class="kpi-value" style="font-size:16px">${hcp.sp}</div></div>` +
-            `<div class="card kpi-card"><div class="kpi-label">UC TRx / Week</div><div class="kpi-value" style="font-size:22px">${hcp.uc.toFixed(4)}</div></div>` +
-            `<div class="card kpi-card"><div class="kpi-label">Opportunity Score</div><div class="kpi-value" style="font-size:22px;color:${CU}">${hcp.sc.toFixed(4)}</div></div>` +
-            `<div class="card kpi-card"><div class="kpi-label">Active Weeks</div><div class="kpi-value" style="font-size:22px">${hcp.ap}%</div></div>`;
-          panel.style.display = 'block';
-          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          const hcp = chart.data.datasets[di].data[idx];
+          const isCovered = (di === 1);
+          window.selectHcpFromTable(hcp.id, hcp.uc, hcp.sc, hcp.sp, hcp.ap, isCovered);
         }
       }
     });

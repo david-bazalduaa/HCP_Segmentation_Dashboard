@@ -438,28 +438,36 @@
 
             <div>
                 <div class="grid-3" style="margin-bottom: 24px;">
-                    <div class="card tier-card tier-1">
-                        <div class="tier-value" style="color:var(--accent-green)">39</div>
+                    <div class="card tier-card" id="tier-card-1" style="cursor: pointer; border-left: none;">
+                        <div class="tier-value" id="tier-val-1" style="color:var(--accent-green)">0</div>
                         <div class="tier-label">Tier 1 — Immediate</div>
                         <div class="tier-desc">Score &ge; 0.60. Highest prescribing + growth signals.</div>
                     </div>
-                    <div class="card tier-card tier-2">
-                        <div class="tier-value" style="color:var(--accent-amber)">14</div>
+                    <div class="card tier-card" id="tier-card-2" style="cursor: pointer; border-left: none;">
+                        <div class="tier-value" id="tier-val-2" style="color:var(--accent-amber)">0</div>
                         <div class="tier-label">Tier 2 — Validate</div>
                         <div class="tier-desc">Score 0.35–0.60. Moderate opportunity, needs validation.</div>
                     </div>
-                    <div class="card tier-card tier-3">
-                        <div class="tier-value" style="color:var(--text-muted)">580</div>
+                    <div class="card tier-card" id="tier-card-3" style="cursor: pointer; border-left: none;">
+                        <div class="tier-value" id="tier-val-3" style="color:var(--text-muted)">0</div>
                         <div class="tier-label">Tier 3 — Monitor</div>
                         <div class="tier-desc">Score &lt; 0.35. Low activity, monitor for emergence.</div>
                     </div>
                 </div>
 
-                <div class="alert-box alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span><strong>Coverage Gap:</strong> 347 of 633 unlabeled HCPs (54.8%) have zero rep visits. Among
-                        Tier 1 (high-opportunity) HCPs, many prescribe actively but have never been contacted by a sales
-                        representative.</span>
+                <div class="alert-box alert-warning" style="display: flex; flex-direction: column; gap: 12px; align-items: stretch;">
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span><strong>Coverage Gap:</strong> <span id="cov-gap-text">347 of 633 unlabeled HCPs (54.8%)</span> have zero rep visits. Click below to view these cohorts.</span>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                        <button id="btn-show-novisits" class="badge badge-red" style="border: 1px solid var(--accent-coral); cursor: pointer; padding: 6px 14px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-eye-slash"></i> No Visits: <span id="count-novisits">0</span>
+                        </button>
+                        <button id="btn-show-covered" class="badge badge-blue" style="border: 1px solid var(--pfizer-blue); cursor: pointer; padding: 6px 14px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-check-double"></i> Covered: <span id="count-covered">0</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -511,7 +519,41 @@
             </div>
         </div>
 
-    </div> ```
+        <!-- Dynamic Table View for Tier / Coverage cohorts -->
+        <div id="cohort-table-panel" class="card" style="margin-top:24px; display:none;">
+            <div class="section-header" style="margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; width:100%;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div class="section-icon" id="cohort-table-icon" style="background:#eef6fc; color:var(--pfizer-blue)">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div>
+                        <div class="section-title" id="cohort-table-title">HCP Cohort List</div>
+                        <div class="section-subtitle" id="cohort-table-subtitle">Explore opportunity probability and attributes</div>
+                    </div>
+                </div>
+                <button id="btn-close-cohort-table" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:18px;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="overflow-x:auto; max-height:450px; border: 1px solid var(--border-subtle); border-radius:var(--radius-sm);">
+                <table class="data-table" id="cohort-data-table">
+                    <thead>
+                        <tr>
+                            <th>HCP ID</th>
+                            <th>Specialty</th>
+                            <th>UC TRx / Week</th>
+                            <th>Opportunity Score</th>
+                            <th>Active Weeks (%)</th>
+                            <th>Interaction State</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cohort-table-body">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
 
     <!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
