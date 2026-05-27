@@ -224,7 +224,6 @@ function buildOpportunityCharts() {
     };
 
     // Histogram
-    const all = [...data.noVisits, ...data.covered];
     const scores = all.map(h => h.sc);
     const minSc = Math.min(...scores);
     const maxSc = Math.max(...scores);
@@ -250,7 +249,7 @@ function buildOpportunityCharts() {
       type: 'scatter', data: {
         datasets: [
           {
-            label: 'No Rep Visits',
+            label: 'Low/No Visits',
             data: nv,
             backgroundColor: RED + 'b5',
             pointRadius: ctx => {

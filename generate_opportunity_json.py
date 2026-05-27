@@ -40,12 +40,11 @@ def generate_json():
         }
         
         # Check if covered or not
-        details_ever = float(row.get('DETAILS_ever', 0.0) if pd.notna(row.get('DETAILS_ever')) else 0.0)
-        
-        if details_ever > 0:
-            covered.append(record)
-        else:
+        # Determine if covered or no visits based on low total visits rather than strictly 0
+        if pd.isna(row.get('DETAILS_total')) or row.get('DETAILS_total', 0) <= 2:
             no_visits.append(record)
+        else:
+            covered.append(record)
             
     final_data = {
         "noVisits": no_visits,
