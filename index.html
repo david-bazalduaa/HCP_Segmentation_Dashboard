@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>HCP Segmentation Dashboard — Pfizer UC</title>
     <meta name="description"
-        content="Longitudinal behavioral analysis for Ulcerative Colitis HCP segmentation — powered by 191-column deep analytics">
+        content="Longitudinal behavioral analysis for Ulcerative Colitis HCP segmentation — powered by 716-column deep analytics">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -21,7 +21,7 @@
         <div class="top-header-left">
             <img src="Pfizer_Logo_Color_RGB.png" alt="Pfizer">
             <h1>HCP Segmentation Insights</h1>
-            <span>Ulcerative Colitis — 191-Feature Deep Analytics</span>
+            <span>Ulcerative Colitis — 716-Feature Deep Analytics</span>
         </div>
         <div><span class="header-badge">Pipeline Stable</span></div>
     </header>
@@ -32,10 +32,9 @@
             Summary</button>
         <button class="tab-btn" data-tab="tab-segments"><i class="fas fa-layer-group"></i> Segment Deep-Dive</button>
         <button class="tab-btn" data-tab="tab-adoption"><i class="fas fa-rocket"></i> Brand Adoption</button>
-        <button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Competitive Intel & Engagement</button>
+        <button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Commercial Insights</button>
         <button class="tab-btn" data-tab="tab-opportunity"><i class="fas fa-crosshairs"></i> Unlabeled
             Opportunity</button>
-        <button class="tab-btn" data-tab="tab-specialty"><i class="fas fa-stethoscope"></i> Specialty Mix</button>
 
     </nav>
 
@@ -49,7 +48,7 @@
             </div>
         </div>
 
-        <div class="grid-5">
+        <div class="grid-4">
             <div class="card kpi-card">
                 <div class="kpi-top"><span class="kpi-label">Total HCPs</span>
                     <div class="kpi-icon" style="background:#f1f5f9;color:#64748b"><i class="fas fa-users"></i></div>
@@ -70,30 +69,23 @@
                     <div class="kpi-icon" style="background:#f5f3ff;color:var(--seg-unlabeled)"><i
                             class="fas fa-search"></i></div>
                 </div>
-                <div class="kpi-value" data-count="633">0</div>
-                <div class="kpi-sub">Pending classification</div>
+                <div class="kpi-value" data-count="9032">0</div>
+                <div class="kpi-sub">633 identified as Business Opportunity Cohort (BoC)</div>
             </div>
             <div class="card kpi-card">
                 <div class="kpi-top"><span class="kpi-label">Feature Columns</span>
                     <div class="kpi-icon" style="background:#ecfaff;color:var(--pfizer-sky)"><i
                             class="fas fa-database"></i></div>
                 </div>
-                <div class="kpi-value" data-count="191">0</div>
+                <div class="kpi-value" data-count="716">0</div>
                 <div class="kpi-sub">7 feature blocks engineered</div>
             </div>
-            <div class="card kpi-card">
-                <div class="kpi-top"><span class="kpi-label">Deep Learning Recall</span>
-                    <div class="kpi-icon" style="background:#ecfdf5;color:var(--accent-green)"><i
-                            class="fas fa-brain"></i></div>
-                </div>
-                <div class="kpi-value" data-count="75" data-suffix="%">0</div>
-                <div class="kpi-sub">On minority class (SEG_C)</div>
-            </div>
+
         </div>
 
         <div class="alert-box alert-info" style="margin-top:20px"><i class="fas fa-info-circle"></i><span><strong>Data
                     Source:</strong> All metrics are computed from <code>hcp_analysis_clean.parquet</code> (20,931 HCPs
-                × 191 columns). KPIs reflect real aggregated prescribing, engagement, and market share data across the
+                × 716 columns). KPIs reflect real aggregated prescribing, engagement, and market share data across the
                 86-week observation window.</span></div>
 
         <div class="grid-2" style="margin-top:24px">
@@ -118,13 +110,13 @@
             <div class="section-icon"><i class="fas fa-layer-group"></i></div>
             <div>
                 <div class="section-title">Segment Deep-Dive</div>
-                <div class="section-subtitle">Behavioral profiling from actual 191-column feature engineering</div>
+                <div class="section-subtitle">Behavioral profiling from actual 716-column feature engineering</div>
             </div>
         </div>
 
         <div class="grid-3">
             <!-- Seg A -->
-            <div class="card segment-card seg-a">
+            <div class="card segment-card">
                 <div class="segment-name" style="color:var(--seg-a)">Segment A — Traditional</div>
                 <div class="segment-desc">Lowest prescribing volume (0.17 UC TRx/wk). Only 3.8% show Pfizer growth.
                     Highest rep effort per Rx (0.94 details/TRx). Status-quo prescribers resistant to new therapies.
@@ -145,7 +137,7 @@
             </div>
 
             <!-- Seg B -->
-            <div class="card segment-card seg-b">
+            <div class="card segment-card">
                 <div class="segment-name" style="color:var(--seg-b)">Segment B — Relationship</div>
                 <div class="segment-desc">Highest Pfizer growth signal (9.6% growing). Most efficient rep conversion
                     (0.44 details/TRx). Broadest promo engagement (2.56 channels). The primary commercial target.</div>
@@ -165,7 +157,7 @@
             </div>
 
             <!-- Seg C -->
-            <div class="card segment-card seg-c">
+            <div class="card segment-card">
                 <div class="segment-name" style="color:var(--seg-c)">Segment C — Didactic</div>
                 <div class="segment-desc">Highest UC volume (0.71 TRx/wk) and strongest biologic loyalty (11.3% IL-23
                     share). Most efficient rep relationship (0.38 details/TRx). Protocol-driven, evidence-based HCPs.
@@ -181,7 +173,7 @@
                             class="segment-stat-value">76.8%</span></div>
                     <div class="segment-stat"><span class="segment-stat-label">Details per Rx</span><span
                             class="segment-stat-value" style="color:var(--accent-green)">0.38</span></div>
-                    <div style="margin-top:8px"><span class="badge badge-sky">Upsell Target — Deep Learning Focus</span>
+                    <div style="margin-top:8px"><span class="badge badge-sky">Upsell Target</span>
                     </div>
                 </div>
             </div>
@@ -224,12 +216,12 @@
                 </div>
                 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
                     <div class="persona-metric">
-                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
-                        <div class="persona-metric-value">14.2</div>
+                        <div class="persona-metric-label">Avg Weekly UC TRx</div>
+                        <div class="persona-metric-value">12.2</div>
                     </div>
                     <div class="persona-metric">
-                        <div class="persona-metric-label">86-Week Interactions</div>
-                        <div class="persona-metric-value">High</div>
+                        <div class="persona-metric-label">Brand Preference</div>
+                        <div class="persona-metric-value">Balanced (Low)</div>
                     </div>
                 </div>
                 <div class="chart-container" style="height:320px"><canvas id="chart-pb-main"></canvas></div>
@@ -248,12 +240,12 @@
                 </div>
                 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
                     <div class="persona-metric">
-                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
-                        <div class="persona-metric-value">6.8</div>
+                        <div class="persona-metric-label">Avg Weekly UC TRx</div>
+                        <div class="persona-metric-value">1.7</div>
                     </div>
                     <div class="persona-metric">
-                        <div class="persona-metric-label">86-Week Interactions</div>
-                        <div class="persona-metric-value">Moderate</div>
+                        <div class="persona-metric-label">Brand Preference</div>
+                        <div class="persona-metric-value">Competitor (Brand 2)</div>
                     </div>
                 </div>
                 <div class="chart-container" style="height:320px"><canvas id="chart-pc-main"></canvas></div>
@@ -272,12 +264,12 @@
                 </div>
                 <div class="persona-detail-grid" style="margin-top:0;margin-bottom:24px">
                     <div class="persona-metric">
-                        <div class="persona-metric-label">Avg Weekly TRx Volume</div>
-                        <div class="persona-metric-value">12.0</div>
+                        <div class="persona-metric-label">Avg Weekly UC TRx</div>
+                        <div class="persona-metric-value">2.5</div>
                     </div>
                     <div class="persona-metric">
-                        <div class="persona-metric-label">86-Week Interactions</div>
-                        <div class="persona-metric-value">Low</div>
+                        <div class="persona-metric-label">Brand Preference</div>
+                        <div class="persona-metric-value">Zero Brands</div>
                     </div>
                 </div>
                 <div class="chart-container" style="height:320px"><canvas id="chart-pa-main"></canvas></div>
@@ -338,7 +330,7 @@
         <div class="section-header">
             <div class="section-icon"><i class="fas fa-chess"></i></div>
             <div>
-                <div class="section-title">Competitive Intelligence</div>
+                <div class="section-title">Commercial Insights</div>
                 <div class="section-subtitle">Pfizer vs Brand2 market dynamics across segments</div>
             </div>
         </div>
@@ -553,30 +545,6 @@
             </div>
         </div>
     </div>
-
-
-    <!-- ==================== TAB 7: SPECIALTY MIX ==================== -->
-    <div id="tab-specialty" class="tab-content">
-        <div class="section-header">
-            <div class="section-icon"><i class="fas fa-stethoscope"></i></div>
-            <div>
-                <div class="section-title">Specialty & Demographics</div>
-                <div class="section-subtitle">HCP specialty distribution across segments</div>
-            </div>
-        </div>
-
-        <div class="grid-2">
-            <div class="card">
-                <div class="chart-title">HCPs by Specialty and Segment (Stacked)</div>
-                <div class="chart-container" style="height:300px"><canvas id="chart-spec-stack"></canvas></div>
-            </div>
-            <div class="card">
-                <div class="chart-title">Specialty Composition (% within each specialty)</div>
-                <div class="chart-container" style="height:300px"><canvas id="chart-spec-pct"></canvas></div>
-            </div>
-        </div>
-    </div>
-
 
 
     <script src="app.js"></script>
