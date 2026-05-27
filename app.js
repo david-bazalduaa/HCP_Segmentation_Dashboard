@@ -173,7 +173,7 @@ function buildOpportunityCharts() {
     window.selectHcpFromTable = (id, uc, sc, sp, ap, isCovered) => {
       const panel = document.getElementById('hcp-detail-panel');
       document.getElementById('hcp-detail-title').textContent = 'NUEVO_ID: ' + id;
-      
+
       const badgeHtml = isCovered ?
         `<span class="badge badge-green" style="font-size: 14px;"><i class="fas fa-check-circle"></i> Representative Contacted</span>` :
         `<span class="badge badge-red" style="font-size: 14px;"><i class="fas fa-times-circle"></i> Zero Representative Visits</span>`;
@@ -184,16 +184,16 @@ function buildOpportunityCharts() {
         `<div class="card kpi-card"><div class="kpi-label">UC TRx / Week</div><div class="kpi-value" style="font-size:22px">${uc.toFixed(4)}</div></div>` +
         `<div class="card kpi-card"><div class="kpi-label">Opportunity Score</div><div class="kpi-value" style="font-size:22px;color:${sc >= 0.6 ? 'var(--accent-green)' : 'var(--accent-amber)'}">${sc.toFixed(4)}</div></div>` +
         `<div class="card kpi-card"><div class="kpi-label">Active Weeks</div><div class="kpi-value" style="font-size:22px">${ap}%</div></div>`;
-      
+
       panel.style.borderLeft = isCovered ? '4px solid var(--accent-green)' : '4px solid var(--accent-coral)';
       const indicator = panel.querySelector('.section-icon');
       indicator.style.color = isCovered ? 'var(--accent-green)' : 'var(--accent-coral)';
       indicator.style.background = isCovered ? '#ecfdf5' : '#fef2f2';
-      
+
       const actionText = isCovered ?
         `<span><strong>Interaction Status:</strong> This HCP is actively visited by sales representatives and shows solid market presence. Maintain standard relationship monitoring.</span>` :
         `<span><strong>Action Required:</strong> This high-potential HCP has zero recorded rep visits but shows active UC prescribing. Recommend scheduling immediate outreach.</span>`;
-      
+
       panel.querySelector('.alert-box').className = isCovered ? 'alert-box alert-success' : 'alert-box alert-warning';
       panel.querySelector('.alert-box span').innerHTML = actionText;
       panel.querySelector('.section-subtitle').innerHTML = badgeHtml;
@@ -249,8 +249,28 @@ function buildOpportunityCharts() {
     const chart = new Chart(ctx, {
       type: 'scatter', data: {
         datasets: [
-          { label: 'No Rep Visits', data: nv, backgroundColor: RED + 'aa', pointRadius: 4, pointStyle: 'circle' },
-          { label: 'Covered', data: cv, backgroundColor: CB + '88', pointRadius: 4, pointStyle: 'rect' }
+          {
+            label: 'No Rep Visits',
+            data: nv,
+            backgroundColor: RED + 'b5',
+            pointRadius: ctx => {
+              const val = ctx.raw ? ctx.raw.sc : 0;
+              return val >= 0.60 ? 10 : val >= 0.35 ? 7 : 4;
+            },
+            pointHoverRadius: 12,
+            pointStyle: 'circle'
+          },
+          {
+            label: 'Covered',
+            data: cv,
+            backgroundColor: CB + '95',
+            pointRadius: ctx => {
+              const val = ctx.raw ? ctx.raw.sc : 0;
+              return val >= 0.60 ? 10 : val >= 0.35 ? 7 : 4;
+            },
+            pointHoverRadius: 12,
+            pointStyle: 'rect'
+          }
         ]
       }, options: {
         maintainAspectRatio: false, responsive: true,
@@ -368,6 +388,35 @@ document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   loadTab('tab-overview');
   animateCounters();
+
+  // Pre-load opportunity counts to avoid showing 0 on UI load
+  fetch('opportunity_data.json').then(r => r.json()).then(data => {
+    const all = [...data.noVisits, ...data.covered];
+    const t1List = all.filter(h => h.sc >= 0.60);
+    const t2List = all.filter(h => h.sc >= 0.35 && h.sc < 0.60);
+    const t3List = all.filter(h => h.sc < 0.35);
+
+    const val1 = document.getElementById('tier-val-1');
+    const val2 = document.getElementById('tier-val-2');
+    const val3 = document.getElementById('tier-val-3');
+    if (val1) val1.textContent = t1List.length;
+    if (val2) val2.textContent = t2List.length;
+    if (val3) val3.textContent = t3List.length;
+
+    const noVisitsCount = data.noVisits.length;
+    const coveredCount = data.covered.length;
+    const totalCount = all.length;
+    const pctNoVisits = ((noVisitsCount / totalCount) * 100).toFixed(1);
+
+    const covGapText = document.getElementById('cov-gap-text');
+    if (covGapText) {
+      covGapText.innerHTML = `<strong>${noVisitsCount} of ${totalCount} unlabeled HCPs (${pctNoVisits}%)</strong>`;
+    }
+    const countNoVisits = document.getElementById('count-novisits');
+    const countCovered = document.getElementById('count-covered');
+    if (countNoVisits) countNoVisits.textContent = noVisitsCount;
+    if (countCovered) countCovered.textContent = coveredCount;
+  }).catch(err => console.error("Error loading initial opportunity statistics:", err));
 
   // Bind live prediction button
   const predictBtn = document.getElementById('btn-predict');
