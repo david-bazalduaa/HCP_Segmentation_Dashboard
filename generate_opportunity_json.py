@@ -41,7 +41,7 @@ def generate_json():
         
         # Check if covered or not
         # Determine if covered or no visits based on low total visits rather than strictly 0
-        if pd.isna(row.get('DETAILS_total')) or row.get('DETAILS_total', 0) <= 2:
+        if pd.isna(row.get('DETAILS_total')) or row.get('DETAILS_total', 0) <= 5:
             no_visits.append(record)
         else:
             covered.append(record)

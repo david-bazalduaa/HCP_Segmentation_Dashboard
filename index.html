@@ -32,8 +32,7 @@
             Summary</button>
         <button class="tab-btn" data-tab="tab-segments"><i class="fas fa-layer-group"></i> Segment Deep-Dive</button>
         <button class="tab-btn" data-tab="tab-adoption"><i class="fas fa-rocket"></i> Brand Adoption</button>
-        <button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Competitive Intel</button>
-        <button class="tab-btn" data-tab="tab-engagement"><i class="fas fa-handshake"></i> Rep Engagement</button>
+        <button class="tab-btn" data-tab="tab-competitive"><i class="fas fa-chess"></i> Competitive Intel & Engagement</button>
         <button class="tab-btn" data-tab="tab-opportunity"><i class="fas fa-crosshairs"></i> Unlabeled
             Opportunity</button>
         <button class="tab-btn" data-tab="tab-specialty"><i class="fas fa-stethoscope"></i> Specialty Mix</button>
@@ -379,10 +378,10 @@
             <div class="chart-title">UC TRx Volume vs Pfizer Market Share (Labeled HCPs)</div>
             <div class="chart-container" style="height:420px"><canvas id="chart-scatter-uc"></canvas></div>
         </div>
-    </div>
 
-    <!-- ==================== TAB 5: REP ENGAGEMENT ==================== -->
-    <div id="tab-engagement" class="tab-content">
+        <!-- ==================== MERGED REP ENGAGEMENT SECTION ==================== -->
+        <hr style="margin: 40px 0; border: 0; border-top: 1px solid #e2e8f0;">
+
         <div class="section-header">
             <div class="section-icon"><i class="fas fa-handshake"></i></div>
             <div>
@@ -458,7 +457,7 @@
                 <div class="alert-box alert-warning" style="display: flex; flex-direction: column; gap: 12px; align-items: stretch;">
                     <div style="display: flex; align-items: flex-start; gap: 12px;">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <span><strong>Coverage Gap:</strong> <span id="cov-gap-text">347 of 633 unlabeled HCPs (54.8%)</span> have low/no rep visits (<=2). Click below to view these cohorts.</span>
+                        <span><strong>Coverage Gap:</strong> <span id="cov-gap-text">347 of 633 unlabeled HCPs (54.8%)</span> have low/no rep visits (<=5). Click below to view these cohorts.</span>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 8px;">
                         <button id="btn-show-novisits" class="badge badge-red" style="border: 1px solid var(--accent-coral); cursor: pointer; padding: 6px 14px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
@@ -501,7 +500,7 @@
         </div>
 
         <div id="hcp-detail-panel" class="card"
-            style="margin-top:24px;display:none;border-left:4px solid var(--accent-coral)">
+            style="margin-top:24px;display:none;">
             <div class="section-header" style="margin-bottom:16px">
                 <div class="section-icon" style="background:#fef2f2;color:var(--accent-coral)">
                     <i class="fas fa-user-md"></i>

@@ -252,10 +252,7 @@ function buildOpportunityCharts() {
             label: 'Low/No Visits',
             data: nv,
             backgroundColor: RED + 'b5',
-            pointRadius: ctx => {
-              const val = ctx.raw ? ctx.raw.sc : 0;
-              return val >= 0.60 ? 10 : val >= 0.35 ? 7 : 4;
-            },
+            pointRadius: 6,
             pointHoverRadius: 12,
             pointStyle: 'circle'
           },
@@ -263,10 +260,7 @@ function buildOpportunityCharts() {
             label: 'Covered',
             data: cv,
             backgroundColor: CB + '95',
-            pointRadius: ctx => {
-              const val = ctx.raw ? ctx.raw.sc : 0;
-              return val >= 0.60 ? 10 : val >= 0.35 ? 7 : 4;
-            },
+            pointRadius: 6,
             pointHoverRadius: 12,
             pointStyle: 'rect'
           }
