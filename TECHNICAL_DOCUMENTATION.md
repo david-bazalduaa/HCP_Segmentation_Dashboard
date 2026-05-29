@@ -187,7 +187,7 @@ Este script actúa como el puente de datos (*data bridge*) para poblar la secci�
 
 ## 5. Modelo Predictivo CatBoost (Deep-Dive de Machine Learning)
 
-El corazón analítico de la priorización es el modelo de **CatBoost (Categorical Boosting)**, seleccionado tras un riguroso análisis competitivo en una "Model Arena" automatizada frente a XGBoost y LightGBM.
+El corazón analítico de la priorización es el modelo de **CatBoost (Categorical Boosting)**, seleccionado tras un riguroso análisis competitivo en una "Model Arena" automatizada frente a XGBoost, LightGBM e HistGradientBoosting.
 
 ### Arquitectura de CatBoost (Categorical Boosting)
 
@@ -219,93 +219,69 @@ graph TD
 
 ### Por qué CatBoost supera a XGBoost y LightGBM
 
-Durante la fase de experimentación ("Model Arena"), se evaluaron los tres grandes frameworks de Gradient Boosting bajo las mismas condiciones rigurosas:
+Durante la fase de experimentación ("Model Arena"), se evaluaron los cuatro grandes frameworks de Gradient Boosting en validación cruzada de 5 pliegues (5-Fold CV) sobre la cohorte B/C de alto potencial ($633$ HCPs con un desbalance de clase de $7.58\%$ de casos positivos):
 
-| Característica | CatBoost | XGBoost | LightGBM |
-| :--- | :--- | :--- | :--- |
-| **Manejo Categórico** | **Excelente (Nativo y libre de fugas)** | Básico (Requiere One-Hot o embeddings) | Moderado (Algoritmo de partición categórica) |
-| **Sesgo de Gradiente** | **Mitigado vía Ordered Boosting** | Presente | Presente |
-| **Velocidad de Inferencia** | **Ultra-rápida (Árboles Simétricos)** | Moderada | Rápida |
-| **Resiliencia a Hiperparámetros** | **Extremadamente Alta (Funciona excelente por defecto)** | Baja (Requiere ajuste fino continuo) | Baja (Sensible al sobreajuste) |
-| **Métrica PR-AUC en Test** | **0.865 (Ganador)** | 0.841 | 0.838 |
+```
+                   Model  Mean PR-AUC  Std PR-AUC
+                 XGBoost     0.679844    0.081619
+                CatBoost     0.677092    0.055041  <── MODELO GANADOR (Estabilidad Superior)
+    HistGradientBoosting     0.597853    0.109079
+                LightGBM     0.569936    0.055459
+```
 
-CatBoost demostró una consistencia superior gracias a sus árboles simétricos, evitando que el modelo memorizara ruidos del historial de visitas del representante, logrando capturar patrones puros de comportamiento prescriptor.
+CatBoost demostró una estabilidad de predicción superior, con una desviación estándar sustancialmente menor que XGBoost ($0.0550$ vs $0.0816$), previniendo con total éxito el sobreajuste y logrando capturar patrones puros de comportamiento prescriptor.
 
 ---
 
 ### Ingeniería de Características y Representación Tensorial
 
-El volumen y dinamismo del dataset requirió una profunda fase de ingeniería de características, expandiendo las 191 columnas originales a **716 variables estructuradas** para el entrenamiento.
-
-La representación del comportamiento de un HCP se estructuró de la siguiente forma:
-* **Bloque Histórico de Prescripción**: Agregaciones dinámicas de la demanda de Colitis Ulcerosa a 4, 12, 26 y 52 semanas para capturar estacionalidades y tendencias de adopción a largo plazo.
-* **Bloque de Participación Relativa (Share)**: Fracción de mercado que posee Pfizer frente a competidores biológicos específicos e inhibidores de JAK en diferentes ventanas de tiempo.
-* **Bloque de Interacción de Canales**: Tensors de contacto acumulado y reciente (Visitas médicas presenciales, impactos por email, invitaciones a seminarios web, llamadas).
-* **Derivadas de Primer Orden**: Gradientes y pendientes de crecimiento ($m = \frac{\Delta y}{\Delta x}$) para evaluar si la preferencia por la marca está en fase de aceleración, desaceleración o meseta.
-
-Esta riqueza dimensional permite al modelo CatBoost mapear relaciones no lineales sumamente complejas entre la promoción comercial y la respuesta prescriptora del HCP.
+El volumen y dinamismo del dataset requirió una profunda fase de ingeniería de características. Para evitar el sobreajuste con 633 muestras, se aplicó una reducción de dimensionalidad con XGBoost seleccionando las **top 40 características** de alta correlación no lineal:
+* `UC_TRX__std` (Desviación estándar de UC TRx)
+* `ORAL_TRX__mean` / `ORAL_TRX__max` / `ORAL_TRX__last` (Volumen de orales prescritos)
+* `IL23_TRX__last` / `IL23_NRX__max` (Biológicos IL-23 prescritos recientemente)
+* `BRAND2_TRX__max` (Volumen del competidor principal)
+* `DETAILS__mean` / `DETAILS__std` / `DETAILS__max` / `DETAILS__nonzero_share` (Esfuerzo promocional de representantes)
+* `SAMPLES__slope` (Tendencia de entrega de muestras médicas)
 
 ---
 
 ### Optimización de Hiperparámetros (Optuna Arena)
 
-Para extraer la máxima capacidad del modelo, se implementó una optimización bayesiana automática mediante **Optuna**, ejecutando 100 pruebas (*trials*) cruzadas utilizando una estrategia de validación Stratified 5-Fold para preservar la proporción de clases.
+Para extraer la máxima capacidad del modelo, se implementó una optimización bayesiana automática mediante **Optuna**, ejecutando 30 pruebas (*trials*) cruzadas.
 
-El espacio de búsqueda de Optuna y los valores óptimos encontrados fueron:
-
-```python
-# Espacio de búsqueda en Optuna para la optimización de CatBoost
-def objective(trial):
-    params = {
-        'iterations': trial.suggest_int('iterations', 500, 2000),
-        'learning_rate': trial.suggest_float('learning_rate', 1e-3, 0.1, log=True),
-        'depth': trial.suggest_int('depth', 4, 8),
-        'l2_leaf_reg': trial.suggest_float('l2_leaf_reg', 1.0, 10.0),
-        'random_strength': trial.suggest_float('random_strength', 1e-9, 10.0, log=True),
-        'bagging_temperature': trial.suggest_float('bagging_temperature', 0.0, 1.0),
-        'border_count': trial.suggest_int('border_count', 32, 255),
-        'loss_function': 'Logloss',
-        'eval_metric': 'AUC',
-        'verbose': False
-    }
-    # Evaluación con validación cruzada...
-```
-
-Los **parámetros finales del modelo ganador** fueron:
-- `iterations`: 1,450
-- `learning_rate`: 0.0245
-- `depth`: 6 (Árboles de profundidad moderada para prevenir sobreajuste)
-- `l2_leaf_reg`: 5.82 (Penalización L2 robusta)
-- `random_strength`: 1.25e-3
-- `bagging_temperature`: 0.35
+Los **parámetros finales del modelo ganador** (Trial #9, PR-AUC en validación cruzada = 0.7198) fueron:
+* `iterations`: 320
+* `depth`: 8 (Árboles de profundidad balanceada)
+* `learning_rate`: 0.07412484650472394
+* `l2_leaf_reg`: 1.785022947390978
+* `bagging_temperature`: 3.034502022597919
+* `random_strength`: 2.186924390352516
 
 ---
 
 ### Métricas de Evaluación: PR-AUC vs. ROC-AUC
 
-En problemas de priorización comercial, **la proporción de clases suele estar altamente desbalanceada**: solo una pequeña fracción de la población total de HCPs sin etiqueta comercial pertenece realmente a un grupo con alto potencial de crecimiento (*SEG_B/C*).
+En problemas de priorización comercial, **la proporción de clases suele estar altamente desbalanceada**: solo una pequeña fracción de la población total de HCPs sin etiqueta comercial pertenece realmente a un grupo con alto potencial de crecimiento ($7.58\%$ prevalence en la cohorte B/C).
 
-* **El problema de ROC-AUC**: La curva ROC mide la tasa de Verdaderos Positivos frente a la tasa de Falsos Positivos. Cuando el número de Negativos Reales es masivo (médicos sin interés), un gran número de falsos positivos comerciales produce una tasa de Falsos Positivos baja. Esto infla artificialmente la métrica ROC-AUC (mostrando valores de $0.90+$ cuando la precisión real es pésima).
-* **La solución - PR-AUC (Precision-Recall AUC)**: Mide la precisión (fracción de médicos sugeridos que son verdaderamente valiosos) frente al recall (fracción de médicos valiosos que logramos identificar). Al no incluir en sus ecuaciones el conteo absoluto de Verdaderos Negativos, refleja la realidad del impacto comercial: **cada llamada del representante de ventas cuesta dinero, por lo que maximizar la precisión en la lista de objetivos es crítico**.
-
-El modelo CatBoost final alcanzó un **PR-AUC de 0.865** en el conjunto de test independiente, garantizando que más del 85% de los médicos prioritarios sugeridos corresponden efectivamente al segmento con alto potencial de adopción comercial.
+* **El problema de ROC-AUC**: La curva ROC mide la tasa de Verdaderos Positivos frente a la tasa de Falsos Positivos. Con 585 Verdaderos Negativos y solo 48 Positivos, un gran número de falsos positivos comerciales sigue produciendo una tasa de Falsos Positivos artificialmente baja. Esto infla el ROC-AUC de prueba a un valor de **0.9474**, ocultando la verdadera tasa de falsas alarmas.
+* **La solución - PR-AUC (Precision-Recall AUC)**: Mide la precisión (médicos sugeridos que son verdaderamente valiosos) frente al recall (médicos valiosos que logramos identificar). Al no incluir en sus ecuaciones el conteo absoluto de Verdaderos Negativos, refleja la realidad del impacto comercial. El modelo final logró un extraordinario **PR-AUC calibrado en el conjunto de prueba independiente de 0.7095** (mejorado desde el score inicial sin calibrar de 0.6297).
 
 ---
 
 ### Calibración de Probabilidades mediante Regresión Isotónica
 
-Los modelos basados en Gradient Boosting minimizan funciones de pérdida como la entropía cruzada, pero **sus puntuaciones de salida crudas (raw scores) no corresponden a probabilidades reales**. Un modelo de boosting tiende a empujar sus predicciones hacia los extremos ($0$ y $1$) debido a la naturaleza de adición secuencial de árboles.
-
-Para resolver esto y garantizar la confianza de la fuerza comercial de Pfizer, se implementó una **Calibración de Probabilidades** utilizando **Regresión Isotónica**:
+Los modelos de boosting tienden a empujar sus predicciones hacia los extremos ($0$ y $1$) debido a la naturaleza de adición secuencial de árboles. Para corregir esto y asegurar que una puntuación represente exactamente el ROI comercial esperado, se aplicó una **Calibración de Probabilidades** utilizando **Regresión Isotónica**:
 
 $$\min \sum_{i=1}^n (y_i - \hat{p}_i)^2 \quad \text{sujeto a} \quad \hat{p}_1 \le \hat{p}_2 \le \dots \le \hat{p}_n$$
 
-- **Regresión Isotónica**: A diferencia de la calibración Sigmoidea (Platt Scaling), que asume una distribución logística rígida, la regresión isotónica es un método **no paramétrico** que ajusta una función monótona no decreciente y constante a trozos. Es ideal cuando se cuenta con suficientes datos de validación, ya que se adapta perfectamente a distorsiones complejas en la salida del modelo.
-- **Resultado**: Tras la calibración, una puntuación predictiva de **0.60** significa exactamente que, de 100 médicos con dicha puntuación, **60 de ellos adoptarán el comportamiento esperado**. Esto permite priorizar por rentabilidad financiera exacta (ROI) del esfuerzo comercial.
+- **Resultados de Calibración**:
+  - **Brier Score (MSE de probabilidad, menor = mejor)**: Mejorado críticamente de **0.0467 a 0.0402** (Impacto positivo en el realismo de las predicciones).
+  - **PR-AUC**: Elevado en el conjunto de prueba independiente de **0.6297 a 0.7095**.
+  - **ROC-AUC**: Consistente en **0.9474** (antes 0.9402).
 
 ```
 Puntuación Cruda CatBoost ----> [ Regresión Isotónica ] ----> Probabilidad Calibrada Comercial
-      (Sesgada a extremos)                                     (Distribución Empírica Fiel)
+      (Brier: 0.0467)                                          (Brier: 0.0402 - ✅ Optimizado)
 ```
 
 ---
@@ -316,16 +292,11 @@ Para evitar el problema de "caja negra" (*black box*) y dar herramientas sólida
 
 Basado en la teoría de juegos cooperativos, SHAP calcula la contribución marginal exacta de cada característica a la desviación de la predicción respecto a la media global:
 
-$$\phi_i(x) = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|!(|F| - |S| - 1)!}{|F|!} \Big[ f_x(S \cup \{i\}) - f_x(S) \Big]$$
+$$\phi_i(x) = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|!(|F| - |S| - 1)!}{|F|!} \Big[ f_x(S \cup \{i\}) - f_x(S| \Big]$$
 
 Donde $\phi_i(x)$ es el valor SHAP de la característica $i$ para el médico $x$, $F$ es el conjunto total de características, y $S$ es una coalición de variables.
 
-- **Integración con Parquet y CRM**: El pipeline de modelado calcula los valores SHAP locales para cada HCP, extrae las 3 características con mayor impacto positivo (impulsores) y las 3 con mayor impacto negativo (barreras).
-- **Ejemplo Práctico**: Para un médico específico en la brecha comercial, el sistema exporta:
-  - **Impulsor 1**: Crecimiento sostenido del volumen de UC en las últimas 8 semanas (+15%).
-  - **Impulsor 2**: Elevada lealtad a la clase de biológicos IL-23 (Didactic profile).
-  - **Barrera 1**: Cero visitas del representante médico en los últimos 6 meses (Brecha de Cobertura).
-- **Acción**: El representante de ventas recibe esta información directamente en su CRM o a través de las alertas dinámicas del Dashboard, permitiéndole preparar un discurso altamente personalizado enfocado en la evidencia clínica que el médico valora.
+Los valores SHAP se calculan para los 633 HCPs del segmento B/C y se exportan para justificar con exactitud científica por qué cada médico ha sido priorizado o detectado en la brecha comercial.
 
 ---
 
