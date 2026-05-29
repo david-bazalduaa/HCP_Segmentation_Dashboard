@@ -23,7 +23,7 @@ The dashboard is organized into 7 strategic tabs:
 3. **Brand Adoption:** Funnel analysis of HCP progression from "Never Tried" to "Active" prescribing.
 4. **Competitive Intelligence:** Pfizer market share vs. Brand2 across segments.
 5. **Rep Engagement:** Measuring the efficiency of marketing channels (Details/Rx ratios).
-6. **Unlabeled Opportunity:** An interactive scatter plot identifying high-value HCPs with zero rep visits. Clicking an HCP reveals their specific ID and KPIs for outreach prioritization.
+6. **Unlabeled Opportunity:** An interactive scatter plot identifying high-value HCPs with low/no rep visits (≤5). Clicking an HCP reveals their specific ID and KPIs for outreach prioritization.
 7. **Specialty Mix:** Stacked views of HCP specialties driving segment volume.
 
 ### 3. Data Integration

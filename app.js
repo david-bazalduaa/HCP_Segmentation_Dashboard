@@ -144,10 +144,10 @@ function buildOpportunityCharts() {
 
       tableBody.innerHTML = list.map(h => {
         const repStatus = isNoVisitsCohort ?
-          `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Zero Visits</span>` :
+          `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Low/No Visits</span>` :
           (data.covered.some(c => c.id === h.id) ?
             `<span class="badge badge-green"><i class="fas fa-check-circle"></i> Rep Covered</span>` :
-            `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Zero Visits</span>`);
+            `<span class="badge badge-red"><i class="fas fa-times-circle"></i> Low/No Visits</span>`);
 
         return `<tr style="cursor:pointer;" onclick="window.selectHcpFromTable('${h.id}', ${h.uc}, ${h.sc}, '${h.sp}', ${h.ap}, ${data.covered.some(c => c.id === h.id)})">
           <td style="font-weight:600; color:var(--pfizer-blue);">${h.id}</td>
@@ -214,7 +214,7 @@ function buildOpportunityCharts() {
     // Attach Coverage Buttons Click Handlers
     document.getElementById('btn-show-novisits').onclick = (e) => {
       e.preventDefault();
-      showCohortTable('Coverage Gap: Zero Rep Visits', `Found ${noVisitsCount} HCPs with zero representative engagement`, data.noVisits, 'var(--accent-coral)', true);
+      showCohortTable('Coverage Gap: Low/No Rep Visits', `Found ${noVisitsCount} HCPs with low or zero representative engagement (≤5 visits)`, data.noVisits, 'var(--accent-coral)', true);
     };
     document.getElementById('btn-show-covered').onclick = (e) => {
       e.preventDefault();
