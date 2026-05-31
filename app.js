@@ -222,6 +222,7 @@ function buildOpportunityCharts() {
     };
 
     // Histogram — fixed bins from 0 to 1 (score range)
+    const scores = all.map(h => h.sc);
     const numBins = 20;
     const binWidth = 1 / numBins; // 0.05 per bin
     let bins = Array(numBins).fill(0);
