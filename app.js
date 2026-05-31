@@ -221,25 +221,18 @@ function buildOpportunityCharts() {
       showCohortTable('Covered: Representative Engaged', `Found ${coveredCount} HCPs with recorded representative contact`, data.covered, 'var(--pfizer-blue)', false);
     };
 
-    // Histogram
-    const scores = all.map(h => h.sc);
-    const minSc = Math.min(...scores);
-    const maxSc = Math.max(...scores);
-
+    // Histogram — fixed bins from 0 to 1 (score range)
     const numBins = 20;
-    const binWidth = (maxSc > minSc) ? (maxSc - minSc) / numBins : 1;
-    let edges = [];
-    for (let i = 0; i <= numBins; i++) edges.push(minSc + i * binWidth);
-
+    const binWidth = 1 / numBins; // 0.05 per bin
     let bins = Array(numBins).fill(0);
     scores.forEach(s => {
-      let b = Math.floor((s - minSc) / binWidth);
+      let b = Math.floor(s / binWidth);
       if (b >= numBins) b = numBins - 1;
       bins[b]++;
     });
 
-    const histLabels = edges.slice(0, -1).map((e, i) => ((e + edges[i + 1]) / 2).toFixed(2));
-    mkBar('chart-opp-hist', histLabels, [{ data: bins, backgroundColor: CU + 'cc', borderRadius: 2, borderSkipped: false }], { plugins: { legend: { display: false } }, x: { ticks: { maxTicksLimit: 10, font: { size: 10 } } } });
+    const histLabels = Array.from({ length: numBins }, (_, i) => ((i * binWidth + (i + 1) * binWidth) / 2).toFixed(2));
+    mkBar('chart-opp-hist', histLabels, [{ data: bins, backgroundColor: CU + 'cc', borderRadius: 2, borderSkipped: false }], { plugins: { legend: { display: false } }, x: { ticks: { maxTicksLimit: 10, font: { size: 10 } }, title: { display: true, text: 'Opportunity Score' } }, y: { title: { display: true, text: 'HCP Count' } } });
 
     // Scatter Plot
     const ctx = document.getElementById('chart-opp-scatter'); if (!ctx) return;
@@ -273,7 +266,7 @@ function buildOpportunityCharts() {
             }
           }
         },
-        scales: { x: { title: { display: true, text: 'UC TRx Mean (weekly)' }, grid: { color: '#f1f5f9' } }, y: { title: { display: true, text: 'Opportunity Score' }, grid: { color: '#f1f5f9' } } },
+        scales: { x: { title: { display: true, text: 'UC TRx Mean (weekly)' }, grid: { color: '#f1f5f9' } }, y: { max: 1, title: { display: true, text: 'Opportunity Score' }, grid: { color: '#f1f5f9' } } },
         onClick: (evt, els) => {
           if (!els.length) return;
           const el = els[0], di = el.datasetIndex, idx = el.index;
