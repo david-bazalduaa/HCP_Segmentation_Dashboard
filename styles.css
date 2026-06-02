@@ -4,10 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-  --pfizer-deep: #0d009d;
-  --pfizer-blue: #0051a5;
-  --pfizer-light: #00a3e0;
-  --pfizer-sky: #54c8e8;
+  --pfizer-deep: #1e1b4b;
+  --pfizer-blue: #1d4ed8;
+  --pfizer-light: #0ea5e9;
+  --pfizer-sky: #38bdf8;
 
   --seg-a: #6B7280;
   --seg-b: #1A6FD4;
@@ -26,7 +26,7 @@
   --border-card: #e5e7eb;
 
   --accent-green: #0D9E6E;
-  --accent-amber: #d97706;
+  --accent-amber: #eab308;
   --accent-coral: #DC3545;
 
   --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
